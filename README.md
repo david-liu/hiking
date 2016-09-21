@@ -46,3 +46,19 @@ python code/service.py
 ```
 
 add the crawling results will been stored in the `job` collection of database 'jobs_db'
+
+## Extension
+
+If you want to crawl another website or another part of a website, you need to implement a `Parser` in the directory of `code\parsers`
+
+the customized Parser need to been the subclass of `JobSiteParser` and override two abstract metheds.
+
+* `def _get_field_css_selectors(self)` 
+
+Define a dictionary of field name to css selector in the job details page
+
+* `def _list_detail_page_urls(self, browser)`
+
+Parse the specified page, and collect all job details page's url
+
+
