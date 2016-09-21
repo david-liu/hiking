@@ -1,25 +1,28 @@
 
 import threading
 from time import sleep, ctime
+
+import utils.log_helper as logger
 from core.job_crawler import JobCrawler
-from parsers.qiaobutang_top20 import QiaobutangSiteTop20Parser
-from parsers.shixiseng import ShixisengSiteParser
+from configs.qiaobutang_top20 import create_run_config as qiaobutang_top20_run_config
+from configs.shixiseng import create_run_config as shixiseng_run_config
+
 from repository.job_console_repository import JobConsoleRepository
 from repository.job_mongo_repository import JobMongoRepository
 
 
 def crawling_qiaobutang(crawler, save_fn):
-	parser = QiaobutangSiteTop20Parser()
-	crawler.start(parser, save_fn)
+	config = qiaobutang_top20_run_config()
+	crawler.start(config, save_fn)
 
 def crawling_shixiseng(crawler, save_fn):
-	parser = ShixisengSiteParser()
-	crawler.start(parser, save_fn)
+	config = shixiseng_run_config()
+	crawler.start(config, save_fn)
 
 crawling_tasks = [crawling_qiaobutang, crawling_shixiseng]
 
 def main():
-	print('start at: %s' % ctime())
+	logger.info('start at: %s', ctime())
 	crawler = JobCrawler()
 	repo = JobMongoRepository()
 	#repo = JobConsoleRepository()
@@ -39,7 +42,7 @@ def main():
 	for i in nloops:
 		threads[i].join()
 
-	print('ALL crawling tasks DONE at: %s' % ctime())
+	logger.info('ALL crawling tasks DONE at: %s' % ctime())
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ import pymongo
 import json
 from bson import BSON
 from bson import json_util
+import utils.log_helper as logger
 
 class MongoRepository(object):
     
@@ -14,10 +15,10 @@ class MongoRepository(object):
             #db.authenticate(username, password)
             coll = db[table_name]
         except Exception as e:
-            print("Could not connect to MongoDB: %s" % e)
+            logger.error("Could not connect to MongoDB: %s" % e)
             raise e
         else:
-            print("Connected successfully!!!")
+            logger.debug("Connected successfully!!!")
 
         self._coll = coll
 
