@@ -1,7 +1,7 @@
 # Job Crawler
 
 
-Job Crawler is a probect crawling job information for the job website
+Job Crawler is a project crawling job information for the job website
 
 
 source code is made available under the [Apache 2.0 license](https://github.com/SeleniumHQ/selenium/blob/master/LICENSE).
@@ -9,7 +9,7 @@ source code is made available under the [Apache 2.0 license](https://github.com/
 
 ## Installation
 
-### install mongodb
+### Install MongoDB
 
 * Update Homebrew’s package database
 ```sh
@@ -27,9 +27,11 @@ brew services start mongodb
 ```
 
 
-### install python environment
+### Install python environment
 
-Now, we will need install the python environment and dependent packages. All steps to build the environment has been scripted in `install_env`. So you can install environment through runing the script.
+Now, we need to install the python environment and all dependent packages. And all steps to build the environment has been scripted in `install_env`. 
+
+So you can install environment just through runing the script.
 ```sh
 ./install_env
 ```
