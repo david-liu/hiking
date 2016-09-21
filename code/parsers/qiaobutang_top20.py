@@ -4,10 +4,10 @@ from core.job_site_parser import JobSiteParser
 
 
 
-class QiaobutangSiteParser(JobSiteParser):
+class QiaobutangSiteTop20Parser(JobSiteParser):
     
     def __init__(self):
-        super(QiaobutangSiteParser, self).__init__(url='http://job.qiaobutang.com/')
+        super(QiaobutangSiteTop20Parser, self).__init__(url='http://job.qiaobutang.com/')
     
     def _get_field_css_selectors(self):
         return {

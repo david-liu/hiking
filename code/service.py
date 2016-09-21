@@ -2,14 +2,14 @@
 import threading
 from time import sleep, ctime
 from core.job_crawler import JobCrawler
-from parsers.qiaobutang import QiaobutangSiteParser
+from parsers.qiaobutang_top20 import QiaobutangSiteTop20Parser
 from parsers.shixiseng import ShixisengSiteParser
 from repository.job_console_repository import JobConsoleRepository
 from repository.job_mongo_repository import JobMongoRepository
 
 
 def crawling_qiaobutang(crawler, save_fn):
-	parser = QiaobutangSiteParser()
+	parser = QiaobutangSiteTop20Parser()
 	crawler.start(parser, save_fn)
 
 def crawling_shixiseng(crawler, save_fn):
