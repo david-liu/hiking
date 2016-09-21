@@ -13,10 +13,12 @@ from repository.job_mongo_repository import JobMongoRepository
 
 def crawling_qiaobutang(crawler, save_fn):
 	config = qiaobutang_top20_run_config()
+	
 	crawler.start(config, save_fn)
 
 def crawling_shixiseng(crawler, save_fn):
 	config = shixiseng_run_config()
+
 	crawler.start(config, save_fn)
 
 crawling_tasks = [crawling_qiaobutang, crawling_shixiseng]

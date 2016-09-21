@@ -42,19 +42,13 @@ def _industry_element_processor(element):
     return raw_text.split(",")
 
 def create_run_config():
-
-	return RunConfig(
-		site_url=SITE_URL,
+    
+    return RunConfig(
+        site_url=SITE_URL,
         field_css_selectors=CSS_SELECTORS,
         list_detail_page_urls_fn=_list_detail_page_urls,
         field_element_processors={
             'updated_date' : _update_date_elelment_processor,
             'industry' : _industry_element_processor,
             'deadline' : _deadline_element_processor
-        })
-
-
-
-
-
-	
+        
