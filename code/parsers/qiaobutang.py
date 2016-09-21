@@ -30,12 +30,12 @@ class QiaobutangSiteParser(JobSiteParser):
 
     def _get_field_element_processors(self):
         processors = {
-            'updated_date' : self._update_date_processor
+            'updated_date' : self._update_date_element_processor
         }
         return processors
         
         
-    def _update_date_processor(self, element):
+    def _update_date_element_processor(self, element):
         raw_date = element.text
 
         return datetime.datetime.strptime(raw_date, '%Y-%m-%d')

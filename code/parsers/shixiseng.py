@@ -29,14 +29,14 @@ class ShixisengSiteParser(JobSiteParser):
     
     def _get_field_element_processors(self):
         processors = {
-            'updated_date' : self._update_date_processor,
-            'industry' : self._industry_processor,
-            'deadline' : self._deadline_processor
+            'updated_date' : self._update_date_elelment_processor,
+            'industry' : self._industry_element_processor,
+            'deadline' : self._deadline_element_processor
         }
         return processors
         
         
-    def _update_date_processor(self, element):
+    def _update_date_elelment_processor(self, element):
         raw_date = element.text
         if len(raw_date) > 2:
             date_text =  raw_date[:-2]
@@ -45,11 +45,11 @@ class ShixisengSiteParser(JobSiteParser):
 
         return datetime.datetime.strptime(date_text, '%Y-%m-%d %H:%M:%S')
 
-    def _deadline_processor(self, element):
+    def _deadline_element_processor(self, element):
         raw_date = element.text
 
         return datetime.datetime.strptime(raw_date, '%Y-%m-%d')
     
-    def _industry_processor(self, element):
+    def _industry_element_processor(self, element):
         raw_text = element.text
         return raw_text.split(",")
