@@ -11,9 +11,9 @@ class MongoRepository(object):
             conn = MongoClient(url)
             coll = conn[database][collection]
         except Exception as e:
-            print "Could not connect to MongoDB: %s" % e
+            print("Could not connect to MongoDB: %s" % e)
         else:
-            print "Connected successfully!!!"
+            print("Connected successfully!!!")
 
         self._coll = coll
 
