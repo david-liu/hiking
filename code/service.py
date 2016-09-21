@@ -4,7 +4,7 @@ from time import sleep, ctime
 from core.job_crawler import JobCrawler
 from parsers.qiaobutang import QiaobutangSiteParser
 from parsers.shixiseng import ShixisengSiteParser
-from repository.job_console_repository import JobMongoRepostory
+from repository.job_console_repository import JobConsoleRepostory
 from repository.job_mongo_repository import JobMongoRepostory
 
 
@@ -22,6 +22,7 @@ def main():
 	print('start at: %s' % ctime())
 	crawler = JobCrawler()
 	repo = JobMongoRepostory()
+	#repo = JobConsoleRepostory()
 	nloops = range(len(crawling_tasks))
 
 	threads = []

@@ -12,7 +12,7 @@ fi
 ENV_DIR="./ENV"
 if [ ! -d "$ENV_DIR" ]; then
 
-  # Control will enter here if $DIRECTORY exists.
+  # Control will enter here if $ENV_DIR did not exists.
   echo "build virtual python environment: $ENV_DIR"
 	
   virtualenv $ENV_DIR
