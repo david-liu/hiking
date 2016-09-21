@@ -51,14 +51,12 @@ add the crawling results will been stored in the `job` collection of database 'j
 
 If you want to crawl another website or another part of a website, you need to implement a `Parser` in the directory of `code\parsers`
 
-the customized Parser need to been the subclass of `JobSiteParser` and override two abstract metheds.
+the customized Parser should be the subclass of `JobSiteParser` in [`code/core/job_site_parser.py`](https://github.com/david-liu/job_crawler/blob/master/code/core/job_site_parser.py)  and implement two abstract metheds.
 
-* `def _get_field_css_selectors(self)` 
+* `def _get_field_css_selectors(self)` : Define a dictionary of field name to css selector in the job details page
 
-Define a dictionary of field name to css selector in the job details page
+* `def _list_detail_page_urls(self, browser)`: Crawling the leading page, and collect all job details page's url
 
-* `def _list_detail_page_urls(self, browser)`
 
-Parse the specified page, and collect all job details page's url
-
+For more information, please reference [`code/parsers/qiaobutang.py`](https://github.com/david-liu/job_crawler/blob/master/code/parsers/qiaobutang.py) and [`code/parsers/shixiseng.py`](https://github.com/david-liu/job_crawler/blob/master/code/parsers/shixiseng.py)
 
