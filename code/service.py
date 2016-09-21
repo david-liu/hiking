@@ -4,8 +4,8 @@ from time import sleep, ctime
 from core.job_crawler import JobCrawler
 from parsers.qiaobutang import QiaobutangSiteParser
 from parsers.shixiseng import ShixisengSiteParser
-from repository.job_console_repository import JobConsoleRepostory
-from repository.job_mongo_repository import JobMongoRepostory
+from repository.job_console_repository import JobConsoleRepository
+from repository.job_mongo_repository import JobMongoRepository
 
 
 def crawling_qiaobutang(crawler, save_fn):
@@ -21,8 +21,8 @@ crawling_tasks = [crawling_qiaobutang, crawling_shixiseng]
 def main():
 	print('start at: %s' % ctime())
 	crawler = JobCrawler()
-	repo = JobMongoRepostory()
-	#repo = JobConsoleRepostory()
+	repo = JobMongoRepository()
+	#repo = JobConsoleRepository()
 	nloops = range(len(crawling_tasks))
 
 	threads = []
@@ -40,6 +40,7 @@ def main():
 		threads[i].join()
 
 	print('ALL crawling tasks DONE at: %s' % ctime())
+
 
 if __name__ == "__main__":
 	main()

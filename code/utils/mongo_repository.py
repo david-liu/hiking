@@ -1,17 +1,21 @@
 from pymongo import MongoClient
+import pymongo
+import json
+from bson import BSON
+from bson import json_util
 
 class MongoRepository(object):
     
-    def __init__(self, database, collection, url=None):
-
-        if url is None:
-            url = 'mongodb://localhost:27017/'
+    def __init__(self, db_name, table_name, host="localhost", port=27017, username='', password=''):
 
         try:
-            conn = MongoClient(url)
-            coll = conn[database][collection]
+            client = MongoClient(host, port)
+            db = client[db_name]
+            #db.authenticate(username, password)
+            coll = db[table_name]
         except Exception as e:
             print("Could not connect to MongoDB: %s" % e)
+            raise e
         else:
             print("Connected successfully!!!")
 
@@ -22,17 +26,26 @@ class MongoRepository(object):
         self._coll.insert(doc)
 
 
-    def find(self, query):
-        cur = self._coll.find(query)
-        return cur
+    def find(self, conditions):
+        single_doc = self._coll.find_one(conditions)
+        json_doc = json.dumps(single_doc,default=json_util.default)
+        json_doc = json_doc.replace("$oid", "id")
+        json_doc = json_doc.replace("_id", "uid")
+        return json.loads(json_doc)
 
-    def list_all(self, query=None):
-        if query is None:
-            query = {}
-        return self._coll.find(query)
+    def list_all(self, conditions=None, sort_index ='_id', limit=100):
+        if conditions is None:
+            conditions = {}
 
-    def update(self, query, update_doc):
-        self._coll.update(query, {"$set": update_doc})
+        all_docs =  self._coll.find(conditions).sort(sort_index, pymongo.DESCENDING).limit(limit)
 
-    def remove(self, query):
-        self._coll.remove(query)
+        json_doc = json.dumps(list(all_docs),default=json_util.default)
+        json_doc = json_doc.replace("$oid", "id")
+        json_doc = json_doc.replace("_id", "uid")
+        return json.loads(str(json_doc))
+
+    def update(self, where, update_doc):
+        self._coll.update(where, {"$set": update_doc})
+
+    def remove(self, where):
+        self._coll.remove(where)

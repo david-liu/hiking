@@ -26,6 +26,7 @@ class QiaobutangSiteParser(JobSiteParser):
         for elem in elems:
             urls.append(elem.get_attribute("href"))
         
+        # only return 10 urls for test
         return urls[:10]
 
     def _get_field_element_processors(self):

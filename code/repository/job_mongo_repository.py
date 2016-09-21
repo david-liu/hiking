@@ -1,13 +1,14 @@
 from utils.mongo_repository import MongoRepository
 import datetime
 
-class JobMongoRepostory(MongoRepository):
+class JobMongoRepository(MongoRepository):
 
-	def __init__(self, url=None):
-		super(JobMongoRepostory, self).__init__(
-			database = 'jobs_db', 
-			collection = 'jobs',
-			url=url)
+	def __init__(self, host="localhost", port=27017):
+		super(JobMongoRepository, self).__init__(
+			db_name = 'jobs_db', 
+			table_name = 'jobs',
+			host=host,
+			port=port)
 
 	def add_job(self, job):
 		job['updated_ts'] = datetime.datetime.utcnow()
