@@ -39,7 +39,7 @@ So you can install environment just through runing the script.
 
 ## Run
 
-you can run code `[code/service.py](https://github.com/david-liu/job_crawler/blob/master/code/service.py)` to crawling the test job website.
+you can run code [code/service.py](https://github.com/david-liu/job_crawler/blob/master/code/service.py) to crawling the test job website.
 
 ```sh
 python code/service.py
