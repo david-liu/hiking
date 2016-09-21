@@ -70,6 +70,6 @@ class JobCrawler(object):
             return None
         else:
             if element_text_processor is None:
-                element_text_processor = lambda e : element.text
+                element_text_processor = lambda e : e.text
 
             return element_text_processor(element)
