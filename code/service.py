@@ -52,7 +52,7 @@ def get_output_channel(argv):
 def main(argv):
     output_chanel = get_output_channel(argv)
 
-    logger.info('start at: %s', ctime())
+    logger.info('start crawling tasks with #%s configs ', len(run_configs))
     
     if output_chanel == 'console':
         repo = JobConsoleRepository()
@@ -75,7 +75,7 @@ def main(argv):
     for i in nloops:
         threads[i].join()
 
-    logger.info('ALL crawling tasks DONE at: %s' % ctime())
+    logger.info('ALL crawling tasks DONE')
 
 
 if __name__ == "__main__":
