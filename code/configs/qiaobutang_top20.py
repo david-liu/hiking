@@ -29,11 +29,11 @@ def _update_date_element_processor(element):
     return datetime.datetime.strptime(raw_date, '%Y-%m-%d')
 
 def create_run_config():
-    
+
     return RunConfig(
         site_url=SITE_URL,
         field_css_selectors=CSS_SELECTORS,
         list_detail_page_urls_fn=_list_detail_page_urls,
         field_element_processors={
-            'updated_date' : _update_date_element_processor
-        })
+            'updated_date' : _update_date_element_processor})
+    

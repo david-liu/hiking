@@ -35,7 +35,6 @@ def get_output_channel(argv):
                 print ("   %-30s  %-10s%s" % ("", "console", "print the result in cosole"))
                 print ("   %-30s  %-10s%s" % ("", "mongodb", "save the result to the mongodb database"))
                 print ("   %-30s%s" % ("", "and the default channel is [console]"))
-                
                 print ("   %-30s%s" % ("-h [ --help ]", "show this usage information"))
                 
                 

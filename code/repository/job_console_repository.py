@@ -9,5 +9,5 @@ def date_handler(obj):
 
 class JobConsoleRepository(object):
 
-	def add_job(self, job):
-		print(json.dumps(job, ensure_ascii=False, default=date_handler))
+    def add_job(self, job):
+        print(json.dumps(job, ensure_ascii=False, default=date_handler))
