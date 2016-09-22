@@ -68,7 +68,7 @@ class JobCrawler(object):
         try:
             element = browser.find_element_by_css_selector(field_css_selector)
         except NoSuchElementException as inst:
-            logger.error("can not find field [%s] with css selector: [%s] in: %s, with [None] value for this fild", field_name, field_css_selector, browser.current_url)
+            logger.error("can not find field [%s] with css selector: [%s] in: %s, set [None] value for this field", field_name, field_css_selector, browser.current_url)
             return None
         else:
             if element_text_processor is None:
