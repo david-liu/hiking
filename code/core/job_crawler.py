@@ -72,6 +72,6 @@ class JobCrawler(object):
             return None
         else:
             if element_text_processor is None:
-                element_text_processor = lambda e : e.text
+                element_text_processor = lambda e : e.text.strip()
 
             return element_text_processor(element)
