@@ -38,8 +38,17 @@ def get_output_channel(argv):
 
         for opt, arg in opts:
             if opt in ("-h", "--help"):
-                print ("code/service.py -o [output channel]\n")
-                print ("The support output channel includes: console|mongodb\n")
+                print ("Job chrawler version: 0.0.1")
+                print ("usage: code/service.py")
+                print ("Options:")
+                print ("   %-30s%s" % ("-o [ --output ]", "channel to save the results, and the output channel can be:"))
+                print ("   %-30s  %-10s%s" % ("", "console", "print the result in cosole"))
+                print ("   %-30s  %-10s%s" % ("", "mongodb", "save the result to mongodb database"))
+                print ("   %-30s%s" % ("", "and the default channel is [console]"))
+                
+                print ("   %-30s%s" % ("-h [ --help ]", "show this usage information"))
+                
+                
                 sys.exit()
             
             if opt in ("-o", "--output"):
