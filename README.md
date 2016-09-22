@@ -54,6 +54,12 @@ code/service.py -o mongodb
 
 and the results will save in the `jobs` collection of `jobs_db` database
 
+You can try with `-h` argument for more information
+
+```sh
+code/service.py -h
+```
+
 ## Extension
 
 If you want to crawl another website or another part of a website, you need to define a `RunConfig` in the directory of `code\configs`
