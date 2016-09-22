@@ -5,7 +5,7 @@ def date_handler(obj):
     if hasattr(obj, 'isoformat'):
         return obj.isoformat()
     else:
-        raise obj
+        raise TypeError ("Type not serializable")
 
 class JobConsoleRepository(object):
 
