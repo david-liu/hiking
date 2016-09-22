@@ -14,17 +14,7 @@ from repository.job_console_repository import JobConsoleRepository
 from repository.job_mongo_repository import JobMongoRepository
 
 
-def crawling_qiaobutang(crawler, save_fn):
-	config = qiaobutang_top20_run_config()
-
-	crawler.start(config, save_fn)
-
-def crawling_shixiseng(crawler, save_fn):
-	config = shixiseng_run_config()
-
-	crawler.start(config, save_fn)
-
-crawling_tasks = [crawling_qiaobutang, crawling_shixiseng]
+run_configs = [qiaobutang_top20_run_config, shixiseng_run_config]
 
 def get_output_channel(argv):
 
@@ -70,11 +60,11 @@ def main(argv):
     else:
         repo = JobMongoRepository()
 
-    nloops = range(len(crawling_tasks))
+    nloops = range(len(run_configs))
     threads = []
     for i in nloops:
-        t = threading.Thread(target=crawling_tasks[i],
-            args=(crawler, repo.add_job))
+        t = threading.Thread(target=crawler.start,
+            args=(run_configs[i](), repo.add_job))
         threads.append(t)
 
     # start threads
