@@ -42,10 +42,17 @@ So you can install environment just through runing the script.
 you can run code [code/service.py](https://github.com/david-liu/job_crawler/blob/master/code/service.py) to crawling the test job website.
 
 ```sh
-python code/service.py
+code/service.py
+```
+and the crawling results will been printed in the console.
+
+If you want to store the data in MongoDB's database, you can run the commond with `-o` argument
+
+```sh
+code/service.py -o mongodb
 ```
 
-add the crawling results will been stored in MongoDB's database `jobs_db`, and the collection name is `job`
+and the results will save in the `jobs` collection of `jobs_db` database
 
 ## Extension
 
