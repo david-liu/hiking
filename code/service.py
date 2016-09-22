@@ -53,8 +53,7 @@ def main(argv):
     output_chanel = get_output_channel(argv)
 
     logger.info('start at: %s', ctime())
-    crawler = JobCrawler()
-
+    
     if output_chanel == 'console':
         repo = JobConsoleRepository()
     else:
@@ -63,6 +62,7 @@ def main(argv):
     nloops = range(len(run_configs))
     threads = []
     for i in nloops:
+        crawler = JobCrawler()
         t = threading.Thread(target=crawler.start,
             args=(run_configs[i](), repo.add_job))
         threads.append(t)
