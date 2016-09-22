@@ -23,13 +23,13 @@ def get_output_channel(argv):
         try:
             opts, args = getopt.getopt(argv,"ho:",["output="])
         except getopt.GetoptError:
-            print('Invalid arguments, please try: code/service.py -h for help\n')
+            print('Invalid arguments, please try: code/app.py -h for help\n')
             sys.exit(2)
 
         for opt, arg in opts:
             if opt in ("-h", "--help"):
                 print ("Job chrawler version: 0.0.1")
-                print ("usage: code/service.py")
+                print ("usage: code/app.py")
                 print ("Options:")
                 print ("   %-30s%s" % ("-o [ --output ]", "channel to save the crawling results, the output channel can be:"))
                 print ("   %-30s  %-10s%s" % ("", "console", "print the result in cosole"))
@@ -42,7 +42,7 @@ def get_output_channel(argv):
             
             if opt in ("-o", "--output"):
                 if arg not in ("console", "mongodb"):
-                    print ("Invalid output channel: [%s], please try: code/service.py -h for help\n" % arg)
+                    print ("Invalid output channel: [%s], please try: code/app.py -h for help\n" % arg)
                     sys.exit()
                 output_chanel = arg
 
