@@ -66,7 +66,7 @@ code/service.py -h
 
 ## Extension
 
-If you want to crawl another website or another part of a website, you need to define a `RunConfig` in the directory of `code\configs`
+If you want to crawl another website or another part of a website, you need to define a `RunConfig` in the directory of `code/configs`
 
 the customized config should be the instance of `RunConfig` in [code/core/run_config.py](https://github.com/david-liu/job_crawler/blob/master/code/core/run_config.py).
 
