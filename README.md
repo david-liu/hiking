@@ -4,7 +4,7 @@
 Job Crawler is a project crawling job information for the job website
 
 
-source code is made available under the [Apache 2.0 license](https://github.com/SeleniumHQ/selenium/blob/master/LICENSE).
+Source code is made available under the [Apache 2.0 license](https://github.com/SeleniumHQ/selenium/blob/master/LICENSE).
 
 
 ## Installation
@@ -43,7 +43,7 @@ So you can install environment just through running the script.
 
 ## Run
 
-you can run code [code/service.py](https://github.com/david-liu/job_crawler/blob/master/code/service.py) to crawling the test job website.
+You can run code [code/service.py](https://github.com/david-liu/job_crawler/blob/master/code/service.py) to crawling the test job website.
 
 ```sh
 code/service.py
@@ -58,7 +58,7 @@ code/service.py -o mongodb
 
 and the results will save in the `jobs` collection of `jobs_db` database
 
-You can try with `-h` argument for more information
+Try with `-h` argument for more information
 
 ```sh
 code/service.py -h
