@@ -11,7 +11,7 @@ source code is made available under the [Apache 2.0 license](https://github.com/
 
 ### Firefox
 
-the crawler use Firefox as the driver to crawl web page, please make sure that you have install Firefox in your computer
+the crawler will use Firefox as the driver to crawl web page, please make sure that you have install Firefox in your computer
 
 ### Install MongoDB
 
