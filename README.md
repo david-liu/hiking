@@ -35,7 +35,7 @@ brew services start mongodb
 
 Now, we need to install the python environment and all dependent packages. And all steps to build the environment has been scripted in `install_env`. 
 
-So you can install environment just through runing the script.
+So you can install environment just through running the script.
 ```sh
 ./install_env
 ```
