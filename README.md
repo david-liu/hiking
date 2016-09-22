@@ -9,6 +9,10 @@ source code is made available under the [Apache 2.0 license](https://github.com/
 
 ## Installation
 
+### Firefox
+
+the crawler use Firefox as the driver to crawl web page, please make sure that you have install Firefox in your computer
+
 ### Install MongoDB
 
 * Update Homebrew’s package database
