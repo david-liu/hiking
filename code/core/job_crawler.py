@@ -48,30 +48,28 @@ class JobCrawler(object):
     def __parse_job_detail_page(self, browser, url, field_css_selectors, field_element_processors = None):
         browser.get(url)
 
+        field_element_processors = {} if field_element_processors is None else field_element_processors
         job = {}
         job["url"] = url
-        for (name, css_selector) in field_css_selectors.items():
+        for (field_name, css_selector) in field_css_selectors.items():
             if not css_selector:
-                job[name] =  None
+                job[field_name] =  None
                 continue
                 
-            field_element_processor = None
-            if field_element_processors is not None and name in field_element_processors:
-                field_element_processor = field_element_processors[name]
+            field_element_processor = field_element_processors.get(field_name)
 
-            value = self.__parse_field_content(browser, name, css_selector, field_element_processor)
-            job[name] = value
+            field_value = self.__parse_field_content(browser, field_name, css_selector, field_element_processor)
+            job[field_name] = field_value
 
         return job
 
     def __parse_field_content(self, browser, field_name, field_css_selector, element_text_processor=None):
+        
+        element_text_processor  = (lambda e : e.text.strip()) if element_text_processor is None else element_text_processor
         try:
             element = browser.find_element_by_css_selector(field_css_selector)
         except NoSuchElementException as inst:
             logger.error("can not find field [%s] with css selector: [%s] in: %s, set [None] value for this field", field_name, field_css_selector, browser.current_url)
             return None
         else:
-            if element_text_processor is None:
-                element_text_processor = lambda e : e.text.strip()
-
             return element_text_processor(element)
