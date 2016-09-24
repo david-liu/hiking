@@ -1,8 +1,15 @@
+import os
+import sys
+import platform
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 import utils.log_helper as logger
 
+
 class JobCrawler(object):
+
+    def __init__(self, phantomjs_path=None):
+        self._phantomjs_path = phantomjs_path
 
     def start(self, run_config, save_fn=None):
         return self._crawling_page(url=run_config.site_url, 
@@ -17,7 +24,11 @@ class JobCrawler(object):
         jobs = []
         try:
             logger.info("begin to crawl jobs from: %s", url)
-            browser = webdriver.Firefox()
+            if self._phantomjs_path is not None:
+                browser = webdriver.PhantomJS(self._phantomjs_path)
+            else:
+                browser = webdriver.Firefox()
+
             browser.get(url)
             urls = list_detail_page_urls_fn(browser)
 

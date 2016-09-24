@@ -1,7 +1,7 @@
 # Job Crawler
 
 
-Job Crawler is a project crawling job information for the job website
+Job Crawler is a project crawling job information from a job website
 
 
 Source code is made available under the [Apache 2.0 license](https://github.com/SeleniumHQ/selenium/blob/master/LICENSE).
@@ -12,6 +12,13 @@ Source code is made available under the [Apache 2.0 license](https://github.com/
 ### Firefox
 
 The project will use Firefox as the driver to crawl web pages, please make sure that Firefox has been installed in your computer
+
+### PhantomJS
+
+The crawler also can run without GUI (Firefox), which means it can crawling pages in headless browser mode. 
+
+In order to support this, you need to download webkit [PhantomJS](http://phantomjs.org/download.html), and extract it in your computer
+
 
 ### Install MongoDB
 
@@ -49,19 +56,22 @@ So you can install environment just through running the script.
 ## Run
 
 You can run code [code/app.py](https://github.com/david-liu/job_crawler/blob/dev/code/app.py) to crawling the test job website.
-
 ```sh
 code/app.py
 ```
 and the crawling results will been printed in the console.
 
 If you want to store the data in MongoDB's database, you can run the commond with `-o` argument
-
 ```sh
 code/app.py -o mongodb
 ```
-
 and the results will save in the `jobs` collection of `jobs_db` database
+
+
+If you want to start the crawler in headless browser model, you cran run the command with `--headless` argument to specify the location of the [PhantomJS](http://phantomjs.org/) webkit
+```sh
+code/app.py --headless=[the location of the binary package of phantomjs]
+```
 
 Try with `-h` argument for more information
 

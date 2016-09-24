@@ -2,6 +2,7 @@
 ### -*- coding: utf-8 -*-
 
 import threading
+import os
 from time import sleep, ctime
 import sys, getopt
 
@@ -16,12 +17,13 @@ from repository.job_mongo_repository import JobMongoRepository
 
 run_configs = [qiaobutang_top20_run_config, shixiseng_run_config]
 
-def get_output_channel(argv):
+def get_running_options(argv):
 
     output_chanel = "console"
+    phantomjs_path = None
     if len(argv) > 0:
         try:
-            opts, args = getopt.getopt(argv,"ho:",["output="])
+            opts, args = getopt.getopt(argv,"ho:",["output=", "headless="])
         except getopt.GetoptError:
             print('Invalid arguments, please try: code/app.py -h for help\n')
             sys.exit(2)
@@ -35,6 +37,7 @@ def get_output_channel(argv):
                 print ("   %-30s  %-10s%s" % ("", "console", "print the result in cosole"))
                 print ("   %-30s  %-10s%s" % ("", "mongodb", "save the result to the mongodb database"))
                 print ("   %-30s%s" % ("", "and the default channel is [console]"))
+                print ("   %-30s%s" % ("--headless=~/phantomjs", "The location of the phantomjs file"))
                 print ("   %-30s%s" % ("-h [ --help ]", "show this usage information"))
 
 
@@ -46,11 +49,18 @@ def get_output_channel(argv):
                     sys.exit()
                 output_chanel = arg
 
-    return output_chanel
+            if opt  == "--headless":
+                if not os.path.exists(arg):
+                    print ("The phantomsjs file  for [%s] did not exit, please check it ", arg)
+                    sys.exit()
+
+                phantomjs_path = arg
+
+    return (output_chanel, phantomjs_path)
 
 def main(argv):
-    output_chanel = get_output_channel(argv)
-
+    output_chanel, phantomjs_path = get_running_options(argv)
+    
     logger.info('start crawling tasks with #%s configs ', len(run_configs))
 
     if output_chanel == 'console':
@@ -61,7 +71,7 @@ def main(argv):
     nloops = range(len(run_configs))
     threads = []
     for i in nloops:
-        crawler = JobCrawler()
+        crawler = JobCrawler(phantomjs_path=phantomjs_path)
         t = threading.Thread(target=crawler.start,
             args=(run_configs[i](), repo.add_job))
         threads.append(t)
