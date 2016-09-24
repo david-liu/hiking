@@ -1,5 +1,5 @@
 #! ENV/bin/python
-### -*- coding: utf-8 -*- 
+### -*- coding: utf-8 -*-
 
 import threading
 from time import sleep, ctime
@@ -36,10 +36,10 @@ def get_output_channel(argv):
                 print ("   %-30s  %-10s%s" % ("", "mongodb", "save the result to the mongodb database"))
                 print ("   %-30s%s" % ("", "and the default channel is [console]"))
                 print ("   %-30s%s" % ("-h [ --help ]", "show this usage information"))
-                
-                
+
+
                 sys.exit()
-            
+
             if opt in ("-o", "--output"):
                 if arg not in ("console", "mongodb"):
                     print ("Invalid output channel: [%s], please try: code/app.py -h for help\n" % arg)
@@ -52,7 +52,7 @@ def main(argv):
     output_chanel = get_output_channel(argv)
 
     logger.info('start crawling tasks with #%s configs ', len(run_configs))
-    
+
     if output_chanel == 'console':
         repo = JobConsoleRepository()
     else:
@@ -79,4 +79,3 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
-

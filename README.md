@@ -30,10 +30,15 @@ brew install mongodb
 brew services start mongodb
 ```
 
+* Export crawling results
+```
+mongoexport --db jobs_db --collection jobs --out jobs_160924.csv --type=csv --fields industry,company,job_name,location,deadline,url,updated_date,created_at
+```
+
 
 ### Install python environment
 
-Now, we need to install the python environment and all dependent packages. And all steps to build the environment has been scripted in `install_env`. 
+Now, we need to install the python environment and all dependent packages. And all steps to build the environment has been scripted in `install_env`.
 
 So you can install environment just through running the script.
 ```sh
@@ -71,4 +76,3 @@ If you want to crawl another website or another part of a website, you need to d
 the customized config should be the instance of `RunConfig` in [code/core/run_config.py](https://github.com/david-liu/job_crawler/blob/dev/code/core/run_config.py).
 
 For more information, please reference [code/configs/qiaobutang_top20.py](https://github.com/david-liu/job_crawler/blob/master/code/configs/qiaobutang_top20.py) and [code/configs/shixiseng.py](https://github.com/david-liu/job_crawler/blob/dev/code/configs/shixiseng.py)
-

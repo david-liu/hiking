@@ -1,5 +1,6 @@
 import datetime
 from core.run_config import RunConfig
+import utils.log_helper as logger
 
 
 SITE_URL = 'http://job.qiaobutang.com/'
@@ -19,14 +20,18 @@ def _list_detail_page_urls(browser):
     urls = []
     for elem in elems:
         urls.append(elem.get_attribute("href"))
-        
+
     # only return 10 urls for test
-    return urls[:10]
+    # return urls[:10]
+    return urls
 
 def _update_date_element_processor(element):
     raw_date = element.text
+    return _format_date(raw_date, '%Y-%m-%d')
 
-    return datetime.datetime.strptime(raw_date, '%Y-%m-%d')
+def _format_date(date_text, date_text_format):
+    date_date = datetime.datetime.strptime(date_text, date_text_format)
+    return date_date.strftime('%Y-%m-%d')
 
 def create_run_config():
 
@@ -36,4 +41,3 @@ def create_run_config():
         list_detail_page_urls_fn=_list_detail_page_urls,
         field_element_processors={
             'updated_date' : _update_date_element_processor})
-    
