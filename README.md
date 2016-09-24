@@ -11,7 +11,7 @@ Source code is made available under the [Apache 2.0 license](https://github.com/
 
 ### Firefox
 
-The project will use Firefox as the driver to crawl web pages, please make sure that Firefox has been installed in your computer
+The project will use Firefox as the driver to crawl web pages, please make sure that Firefox has been installed in your computer.
 
 ### PhantomJS
 
@@ -61,19 +61,19 @@ code/app.py
 ```
 and the crawling results will been printed in the console.
 
-If you want to store the data in MongoDB's database, you can run the commond with `-o` argument
+If you want to store the data in MongoDB's database, you can run the commond with `-o` argument.
 ```sh
 code/app.py -o mongodb
 ```
-and the results will save in the `jobs` collection of `jobs_db` database
+and the results will save in the `jobs` collection of `jobs_db` database.
 
 
-If you want to start the crawler in headless browser model, you cran run the command with `--headless` argument to specify the location of the [PhantomJS](http://phantomjs.org/) webkit
+If you want to start the crawler in headless browser model, you can run the command with `--headless` argument to specify the location of the [PhantomJS](http://phantomjs.org/) webkit.
 ```sh
 code/app.py --headless=[the location of the binary package of phantomjs]
 ```
 
-Try with `-h` argument for more information
+Try with `-h` argument for more information.
 
 ```sh
 code/app.py -h
