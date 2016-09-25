@@ -1,5 +1,6 @@
 import utils.log_helper as logger
 import utils.webelement_parser_helper as parser_helper
+from core.run_config import ByKeys, FieldTypeKeys, FieldMultiplicityKeys
 from core.run_config import RunConfig
 
 
@@ -14,6 +15,23 @@ CSS_SELECTORS = {
     "company" : 'h2.job-subtitle',
     "industry" : '.job-sidebar .job-sidebar__company_bottom .job-sidebar__slogan .job-require'
 }
+
+# A exmple of complex selector
+    
+# CSS_SELECTORS = {
+#     "job_name" :  {
+#         'key': 'job-intro__title',
+#         'by': ByKeys.CLASS_NAME
+#     },
+#     "updated_date" : '.job-intro .job-intro__bottom  .job-intro__bottom_right .job-intro__info_content',
+#     "location" : '.job-info .job-info-addr',
+#     "deadline" : '',
+#     "company" : 'h2.job-subtitle',
+#     "industry" : {
+#         'key' : '.job-sidebar .job-sidebar__company_bottom .job-sidebar__slogan .job-require',
+#         'multi' : FieldMultiplicityKeys.MANY
+#     }
+# }
 
 def _list_detail_page_urls(browser):
     elems = browser.find_elements_by_css_selector(".job__tab.job__tab_top .job__item a.job__title")
@@ -36,7 +54,7 @@ def create_run_config():
 
     return RunConfig(
         site_url=SITE_URL,
-        field_css_selectors=CSS_SELECTORS,
+        field_selectors=CSS_SELECTORS,
         list_detail_page_urls_fn=_list_detail_page_urls,
         field_element_processors={
             'updated_date' : _update_date_element_processor})

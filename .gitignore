@@ -13,7 +13,7 @@ gbsc.deep_sim.tar
 # C extensions
 *.so
 
-
+*.ipynb
 plugins/
 # Distribution / packaging
 .Python

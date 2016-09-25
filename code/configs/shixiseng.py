@@ -79,7 +79,7 @@ def create_run_config():
 
     return RunConfig(
         site_url=SITE_URL,
-        field_css_selectors=CSS_SELECTORS,
+        field_selectors=CSS_SELECTORS,
         list_detail_page_urls_fn=_list_detail_page_urls,
         field_element_processors={
             'updated_date' : _update_date_elelment_processor,
