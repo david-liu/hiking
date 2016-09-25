@@ -15,7 +15,7 @@ from repository.job_console_repository import JobConsoleRepository
 from repository.job_mongo_repository import JobMongoRepository
 
 
-run_configs = [qiaobutang_top20_run_config]#, shixiseng_run_config]
+run_configs = [qiaobutang_top20_run_config, shixiseng_run_config]
 
 def get_running_options(argv):
 
