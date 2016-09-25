@@ -17,7 +17,24 @@ The project will use Firefox as the driver to crawl web pages, please make sure 
 
 The crawler also can run without GUI (Firefox), which means it can crawling pages in headless browser mode. 
 
-In order to support this, you need to download webkit [PhantomJS](http://phantomjs.org/download.html), and extract it in your computer
+In order to support this, you need to download webkit [PhantomJS](http://phantomjs.org/download.html), and extract it in your computer.
+
+If you extact `PhantomJS` in the `~/phantomjs-2.1.1` directory, please run the command to check it is the right version.
+
+```
+~/phantomjs-2.1.1/bin/phantomjs -v
+```
+
+> Note: For Ubuntu Server, It however still relies on `Fontconfig` (the package fontconfig or `libfontconfig`, depending on the distribution), please use fellowing commands to install these dependecies
+
+
+```
+sudo apt-get update
+sudo apt-get install fontconfig-config
+sudo apt-get install fontconfig
+```
+
+
 
 
 ### Install MongoDB
