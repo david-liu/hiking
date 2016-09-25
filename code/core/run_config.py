@@ -8,7 +8,7 @@ class ByKeys(object):
     * `NAME`: Use this when you know name attribute of an element. With this strategy, the first element with the name attribute value matching the location will be returned
     * `CSS_SELECTOR`: locate ellement with css selector.
     * `CLASS_NAME`: locate ellement with class name
-    * `XPATH`: locate ellement with xPath
+    * `X_PATH`: locate ellement with xPath
     """
 
     ID = 'id'
@@ -129,7 +129,6 @@ class RunConfig(object):
         """
 
         selectors = {}
-        print '======'
         for field_name, value in element_selectors.items():
             if field_name in selectors.keys():
                  raise ValueError('The paramter [%s] has been defined' % field_name)
