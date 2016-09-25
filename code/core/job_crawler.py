@@ -1,9 +1,11 @@
 import os
 import sys
 import platform
+import time
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 import utils.log_helper as logger
+import utils.webelement_parser_helper as parser_helper
 
 
 class JobCrawler(object):
@@ -59,6 +61,7 @@ class JobCrawler(object):
     def __parse_job_detail_page(self, browser, url, field_css_selectors, field_element_processors = None):
         browser.get(url)
 
+        
         field_element_processors = {} if field_element_processors is None else field_element_processors
         job = {}
         job["url"] = url
@@ -76,11 +79,18 @@ class JobCrawler(object):
 
     def __parse_field_content(self, browser, field_name, field_css_selector, element_text_processor=None):
         
-        element_text_processor  = (lambda e : e.text.strip()) if element_text_processor is None else element_text_processor
-        try:
-            element = browser.find_element_by_css_selector(field_css_selector)
-        except NoSuchElementException as inst:
+        element_text_processor  = parser_helper.get_element_text if element_text_processor is None else element_text_processor
+
+        elements = browser.find_elements_by_css_selector(field_css_selector)
+        
+        if len(elements) == 1:
+            value =  element_text_processor(elements[0])
+        elif len(elements) > 1:
+            value = [element_text_processor(element) for element in elements]
+        elif len(elements) == 0:
             logger.error("can not find field [%s] with css selector: [%s] in: %s, set [None] value for this field", field_name, field_css_selector, browser.current_url)
-            return None
-        else:
-            return element_text_processor(element)
+            value = None
+
+            
+        return value
+

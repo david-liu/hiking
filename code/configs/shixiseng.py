@@ -1,6 +1,6 @@
-import datetime
-from core.run_config import RunConfig
 import utils.log_helper as logger
+import utils.webelement_parser_helper as parser_helper
+from core.run_config import RunConfig
 
 SITE_URL = 'http://www.shixiseng.com'
 
@@ -52,24 +52,23 @@ def _get_company_hotjob_urls(browser, companyUrl):
     return urls
 
 def _update_date_elelment_processor(element):
-    raw_date = element.text
+    raw_date = parser_helper.get_element_text(element)
     if len(raw_date) > 2:
         date_text =  raw_date[:-2]
     else:
         date_text = raw_date
 
-    return _format_date(date_text, '%Y-%m-%d %H:%M:%S')
-
-def _format_date(date_text, date_text_format):
-    date_date = datetime.datetime.strptime(date_text, date_text_format)
-    return date_date.strftime('%Y-%m-%d')
+    return parser_helper.format_to_date_string(date_text, 
+        src_format='%Y-%m-%d %H:%M:%S')
 
 def _deadline_element_processor(element):
-    raw_date = element.text
-    return _format_date(raw_date, '%Y-%m-%d')
+    raw_date = parser_helper.get_element_text(element)
+
+    return parser_helper.format_to_date_string(raw_date, 
+        src_format='%Y-%m-%d')
 
 def _industry_element_processor(element):
-    raw_text = element.text
+    raw_text = parser_helper.get_element_text(element)
     return raw_text.split(",")[0]
 
 

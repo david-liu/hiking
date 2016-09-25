@@ -1,16 +1,17 @@
-import datetime
-from core.run_config import RunConfig
 import utils.log_helper as logger
+import utils.webelement_parser_helper as parser_helper
+from core.run_config import RunConfig
+
 
 
 SITE_URL = 'http://job.qiaobutang.com/'
 
 CSS_SELECTORS = {
-    "job_name" :  '.job-intro .job-intro__title',
+    "job_name" :  'h1.job-intro__title',
     "updated_date" : '.job-intro .job-intro__bottom  .job-intro__bottom_right .job-intro__info_content',
     "location" : '.job-info .job-info-addr',
     "deadline" : '',
-    "company" : '.job-intro .job-subtitle',
+    "company" : 'h2.job-subtitle',
     "industry" : '.job-sidebar .job-sidebar__company_bottom .job-sidebar__slogan .job-require'
 }
 
@@ -26,12 +27,10 @@ def _list_detail_page_urls(browser):
     return urls
 
 def _update_date_element_processor(element):
-    raw_date = element.text
-    return _format_date(raw_date, '%Y-%m-%d')
-
-def _format_date(date_text, date_text_format):
-    date_date = datetime.datetime.strptime(date_text, date_text_format)
-    return date_date.strftime('%Y-%m-%d')
+    raw_date = parser_helper.get_element_text(element)
+    
+    return parser_helper.format_to_date_string(raw_date, 
+        src_format='%Y-%m-%d')
 
 def create_run_config():
 
