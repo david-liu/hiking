@@ -72,7 +72,7 @@ So you can install environment just through running the script.
 
 ## Run
 
-You can run code [code/app.py](https://github.com/david-liu/job_crawler/blob/dev/code/app.py) to crawling the test job website.
+You can run code [code/app.py](https://github.com/david-liu/hiking/blob/dev/code/app.py) to crawling the test job website.
 ```sh
 code/app.py
 ```
@@ -100,6 +100,6 @@ code/app.py -h
 
 If you want to crawl another website or another part of a website, you need to define a `RunConfig` in the directory of `code/configs`
 
-the customized config should be the instance of `RunConfig` in [code/hiking/core/run_config.py](https://github.com/david-liu/job_crawler/blob/dev/code/hiking/core/run_config.py).
+the customized config should be the instance of `RunConfig` in [code/hiking/core/run_config.py](https://github.com/david-liu/hiking/blob/dev/code/hiking/core/run_config.py).
 
-For more information, please reference [code/run_configs/qiaobutang_top20.py](https://github.com/david-liu/job_crawler/blob/dev/code/hiking/run_configs/qiaobutang_top20.py) and [code/run_configs/shixiseng.py](https://github.com/david-liu/job_crawler/blob/dev/code/hiking/run_configs/shixiseng.py)
+For more information, please reference [code/run_configs/qiaobutang_top20.py](https://github.com/david-liu/hiking/blob/dev/code/run_configs/qiaobutang_top20.py) and [code/run_configs/shixiseng.py](https://github.com/david-liu/hiking/blob/dev/code/run_configs/shixiseng.py)
