@@ -1,7 +1,7 @@
 # Job Crawler
 
 
-Job Crawler is a project crawling job information from a job website
+Hiking is a job crawler crawling job information from a job website
 
 
 Source code is made available under the [Apache 2.0 license](https://github.com/SeleniumHQ/selenium/blob/master/LICENSE).
@@ -11,11 +11,11 @@ Source code is made available under the [Apache 2.0 license](https://github.com/
 
 ### Firefox
 
-The project will use Firefox as the driver to crawl web pages, please make sure that Firefox has been installed in your computer.
+Hiking will use Firefox as the driver to crawl web pages, please make sure that Firefox has been installed in your computer.
 
 ### PhantomJS
 
-The crawler also can run without GUI (Firefox), which means it can crawling pages in headless browser mode. 
+Hiking also can run without GUI (Firefox), which means it can crawling pages in headless browser mode. 
 
 In order to support this, you need to download webkit [PhantomJS](http://phantomjs.org/download.html), and extract it in your computer.
 

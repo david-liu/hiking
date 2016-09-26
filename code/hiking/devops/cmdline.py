@@ -1,4 +1,4 @@
-"""Helper functions to initializer Websauna framework for command line applications."""
+"""Helper functions to initializer Hiking for command line applications."""
 import logging
 import os
 from logging.config import fileConfig
