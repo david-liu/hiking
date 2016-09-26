@@ -1,9 +1,7 @@
 #! ENV/bin/python
 ### -*- coding: utf-8 -*-
 
-import threading
 import os
-from time import sleep, ctime
 import sys, getopt
 import logging
 
@@ -19,7 +17,6 @@ from run_configs.shixiseng import create_run_config as shixiseng_run_config
 logger = logging.getLogger(__name__)
 
 run_configs = [qiaobutang_top20_run_config, shixiseng_run_config]
-
 
 def usage():
     print ("Job chrawler version: 0.0.1")
@@ -67,7 +64,7 @@ def get_running_options(argv):
                     sys.exit()
 
                 phantomjs_path = arg
-                
+
     return (output_chanel, phantomjs_path, open_debug)
 
 
