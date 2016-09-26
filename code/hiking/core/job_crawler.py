@@ -2,13 +2,15 @@ import os
 import sys
 import platform
 import time
+import logging
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
-from core.run_config import ByKeys, FieldTypeKeys, FieldMultiplicityKeys
-import utils.log_helper as logger
-import utils.webelement_parser_helper as parser_helper
+from hiking.core.run_config import ByKeys, FieldTypeKeys, FieldMultiplicityKeys
+import hiking.utils.webelement_parser_helper as parser_helper
 
+
+logger = logging.getLogger(__name__)
 
 class JobCrawler(object):
 
@@ -39,7 +41,7 @@ class JobCrawler(object):
             if len(urls) == 0:
                 logger.error("Can not find any detials urls in: %s", url)
             else:
-                logger.debug("find #%s details pages in: %s" % (len(urls), url))
+                logger.info("find #%s details links in: %s" % (len(urls), url))
                 for url in urls:
                     job = self.__parse_job_detail_page(
                         browser, 
@@ -62,7 +64,6 @@ class JobCrawler(object):
 
     def __parse_job_detail_page(self, browser, url, field_selectors, field_element_processors = None):
         browser.get(url)
-
         
         field_element_processors = {} if field_element_processors is None else field_element_processors
         job = {}
@@ -99,8 +100,7 @@ class JobCrawler(object):
             elements = browser.find_elements_by_class_name(field_selector.key)
         elif field_selector.by == ByKeys.X_PATH:
             elements = browser.find_elements_by_xpath(field_selector.key)
-
-
+            
         if len(elements) == 0:
             logger.error("can not find field [%s] with [%s] selector: [%s] in: %s, set [None] value for this field", field_name, field_selector.key, field_selector.by, browser.current_url)
             value = None

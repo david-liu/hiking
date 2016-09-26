@@ -1,6 +1,6 @@
-import utils.log_helper as logger
-import utils.webelement_parser_helper as parser_helper
-from core.run_config import RunConfig
+import hiking.utils.webelement_parser_helper as parser_helper
+from hiking.core.run_config import ByKeys, FieldTypeKeys, FieldMultiplicityKeys
+from hiking.core.run_config import RunConfig
 
 SITE_URL = 'http://www.shixiseng.com'
 

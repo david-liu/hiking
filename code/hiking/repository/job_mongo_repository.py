@@ -1,4 +1,4 @@
-from utils.mongo_repository import MongoRepository
+from hiking.utils.mongo_repository import MongoRepository
 import datetime
 
 class JobMongoRepository(MongoRepository):
