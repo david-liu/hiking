@@ -1,7 +1,7 @@
-# Job Crawler
+# Hiking
 
 
-Job Crawler is a project crawling job information for the job website
+Hiking is a job crawler crawling job information from a job website
 
 
 Source code is made available under the [Apache 2.0 license](https://github.com/SeleniumHQ/selenium/blob/master/LICENSE).
@@ -11,7 +11,31 @@ Source code is made available under the [Apache 2.0 license](https://github.com/
 
 ### Firefox
 
-The project will use Firefox as the driver to crawl web pages, please make sure that Firefox has been installed in your computer
+Hiking will use Firefox as the driver to crawl web pages, please make sure that Firefox has been installed in your computer.
+
+### PhantomJS
+
+Hiking also can run without GUI (Firefox), which means it can crawling pages in headless browser mode. 
+
+In order to support this, you need to download webkit [PhantomJS](http://phantomjs.org/download.html), and extract it in your computer.
+
+If you extact `PhantomJS` in the `~/phantomjs-2.1.1` directory, please run the command to check it is the right version.
+
+```
+~/phantomjs-2.1.1/bin/phantomjs -v
+```
+
+> Note: For Ubuntu Server, It however still relies on `Fontconfig` (the package fontconfig or `libfontconfig`, depending on the distribution), please use fellowing commands to install these dependecies
+
+
+```
+sudo apt-get update
+sudo apt-get install fontconfig-config
+sudo apt-get install fontconfig
+```
+
+
+
 
 ### Install MongoDB
 
@@ -30,10 +54,15 @@ brew install mongodb
 brew services start mongodb
 ```
 
+* Export crawling results
+```
+mongoexport --db jobs_db --collection jobs --out jobs_160924.csv --type=csv --fields industry,company,job_name,location,deadline,url,updated_date,created_at
+```
+
 
 ### Install python environment
 
-Now, we need to install the python environment and all dependent packages. And all steps to build the environment has been scripted in `install_env`. 
+Now, we need to install the python environment and all dependent packages. And all steps to build the environment has been scripted in `install_env`.
 
 So you can install environment just through running the script.
 ```sh
@@ -44,21 +73,24 @@ So you can install environment just through running the script.
 ## Run
 
 You can run code [code/app.py](https://github.com/david-liu/job_crawler/blob/dev/code/app.py) to crawling the test job website.
-
 ```sh
 code/app.py
 ```
 and the crawling results will been printed in the console.
 
-If you want to store the data in MongoDB's database, you can run the commond with `-o` argument
-
+If you want to store the data in MongoDB's database, you can run the commond with `-o` argument.
 ```sh
 code/app.py -o mongodb
 ```
+and the results will save in the `jobs` collection of `jobs_db` database.
 
-and the results will save in the `jobs` collection of `jobs_db` database
 
-Try with `-h` argument for more information
+If you want to start the crawler in headless browser model, you can run the command with `--headless` argument to specify the location of the [PhantomJS](http://phantomjs.org/) webkit.
+```sh
+code/app.py --headless=[the location of the binary package of phantomjs]
+```
+
+Try with `-h` argument for more information.
 
 ```sh
 code/app.py -h
@@ -68,7 +100,6 @@ code/app.py -h
 
 If you want to crawl another website or another part of a website, you need to define a `RunConfig` in the directory of `code/configs`
 
-the customized config should be the instance of `RunConfig` in [code/core/run_config.py](https://github.com/david-liu/job_crawler/blob/dev/code/core/run_config.py).
+the customized config should be the instance of `RunConfig` in [code/hiking/core/run_config.py](https://github.com/david-liu/job_crawler/blob/dev/code/hiking/core/run_config.py).
 
-For more information, please reference [code/configs/qiaobutang_top20.py](https://github.com/david-liu/job_crawler/blob/master/code/configs/qiaobutang_top20.py) and [code/configs/shixiseng.py](https://github.com/david-liu/job_crawler/blob/dev/code/configs/shixiseng.py)
-
+For more information, please reference [code/run_configs/qiaobutang_top20.py](https://github.com/david-liu/job_crawler/blob/dev/code/hiking/run_configs/qiaobutang_top20.py) and [code/run_configs/shixiseng.py](https://github.com/david-liu/job_crawler/blob/dev/code/hiking/run_configs/shixiseng.py)

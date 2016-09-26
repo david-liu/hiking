@@ -1,9 +1,12 @@
 from pymongo import MongoClient
 import pymongo
 import json
+import logging
 from bson import BSON
 from bson import json_util
-import utils.log_helper as logger
+
+logger = logging.getLogger(__name__)
+
 
 class MongoRepository(object):
     
@@ -18,7 +21,7 @@ class MongoRepository(object):
             logger.error("Could not connect to MongoDB: %s" % e)
             raise e
         else:
-            logger.debug("Connected successfully!!!")
+            logger.info("Connected [mongodb://%s:%s/%s:%s] successfully!!!", host, port, db_name, table_name)
 
         self._coll = coll
 

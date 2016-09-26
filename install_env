@@ -5,7 +5,7 @@ command_exists () {
 }
 
 if ! command_exists virtualenv ; then
-   echo 'installl viretualenv'
+   echo 'install viretualenv'
    pip install virtualenv
 fi
 
@@ -14,7 +14,7 @@ if [ ! -d "$ENV_DIR" ]; then
 
   # Control will enter here if $ENV_DIR did not exists.
   echo "build virtual python environment: $ENV_DIR"
-	
+
   virtualenv $ENV_DIR
 fi
 
@@ -22,4 +22,3 @@ echo "active ${ENV_DIR}/bin/activate"
 source "${ENV_DIR}/bin/activate"
 
 pip install -r requirements.txt
-
