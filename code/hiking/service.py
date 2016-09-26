@@ -1,4 +1,4 @@
-from hiking.core.job_crawler import JobCrawler
+from hiking.core.crawler import Crawler
 import threading
 import logging
 
@@ -11,7 +11,7 @@ def start(run_configs, phantomjs_path=None, saver=None):
     nloops = range(len(run_configs))
     threads = []
     for i in nloops:
-        crawler = JobCrawler(phantomjs_path=phantomjs_path)
+        crawler = Crawler(phantomjs_path=phantomjs_path)
         t = threading.Thread(target=crawler.start,
             args=(run_configs[i](), saver))
         threads.append(t)

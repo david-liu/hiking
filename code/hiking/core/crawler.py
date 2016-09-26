@@ -12,7 +12,7 @@ import hiking.utils.webelement_parser_helper as parser_helper
 
 logger = logging.getLogger(__name__)
 
-class JobCrawler(object):
+class Crawler(object):
 
     def __init__(self, phantomjs_path=None):
         self._phantomjs_path = phantomjs_path
@@ -27,9 +27,9 @@ class JobCrawler(object):
 
     def _crawling_page(self, url, list_detail_page_urls_fn, field_selectors, field_element_processors = None, save_fn=None):
         
-        jobs = []
+        objects = []
         try:
-            logger.info("begin to crawl jobs from: %s", url)
+            logger.info("begin to crawl from: %s", url)
             if self._phantomjs_path is not None:
                 browser = webdriver.PhantomJS(self._phantomjs_path)
             else:
@@ -43,42 +43,42 @@ class JobCrawler(object):
             else:
                 logger.info("find #%s details links in: %s" % (len(urls), url))
                 for url in urls:
-                    job = self.__parse_job_detail_page(
+                    obj = self.__parse_job_detail_page(
                         browser, 
                         url, 
                         field_selectors, 
                         field_element_processors)
 
                     if save_fn is not None:
-                        save_fn(job)
+                        save_fn(obj)
 
-                    jobs.append(job)
+                    objects.append(obj)
 
         except Exception as inst:
             logger.error("Find exception during Crawling page: %s" , inst)
         finally:
             browser.quit()
 
-        return jobs
+        return objects
 
 
     def __parse_job_detail_page(self, browser, url, field_selectors, field_element_processors = None):
         browser.get(url)
         
         field_element_processors = {} if field_element_processors is None else field_element_processors
-        job = {}
-        job["url"] = url
+        obj = {}
+        obj["url"] = url
         for (field_name, field_selector) in field_selectors.items():
             if not field_selectors or not field_selector.key:
-                job[field_name] =  None
+                obj[field_name] =  None
                 continue
                 
             field_element_processor = field_element_processors.get(field_name)
 
             field_value = self.__parse_field_content(browser, field_name, field_selector, field_element_processor)
-            job[field_name] = field_value
+            obj[field_name] = field_value
 
-        return job
+        return obj
 
     def __parse_field_content(self, browser, field_name, field_selector, element_text_processor=None):
         
@@ -100,7 +100,7 @@ class JobCrawler(object):
             elements = browser.find_elements_by_class_name(field_selector.key)
         elif field_selector.by == ByKeys.X_PATH:
             elements = browser.find_elements_by_xpath(field_selector.key)
-            
+
         if len(elements) == 0:
             logger.error("can not find field [%s] with [%s] selector: [%s] in: %s, set [None] value for this field", field_name, field_selector.key, field_selector.by, browser.current_url)
             value = None
