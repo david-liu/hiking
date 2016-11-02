@@ -35,8 +35,6 @@ sudo apt-get install fontconfig
 ```
 
 
-
-
 ### Install MongoDB
 
 * Update Homebrew’s package database
@@ -72,15 +70,15 @@ So you can install environment just through running the script.
 
 ## Run
 
-You can run code [code/app.py](https://github.com/david-liu/hiking/blob/dev/code/app.py) to crawling the test job website.
+You can run sample code [code/job_app.py](https://github.com/david-liu/hiking/blob/dev/code/job_app.py) to crawling the test job website.
 ```sh
-code/app.py
+code/job_app.py
 ```
 and the crawling results will been printed in the console.
 
-If you want to store the data in MongoDB's database, you can run the commond with `-o` argument.
+If you want to store the data in MongoDB's database, you can run the commond with `-o` and `-d` argument.
 ```sh
-code/app.py -o mongodb
+code/job_app.py -o mongodb -d jobs_db:jobs
 ```
 and the results will save in the `jobs` collection of `jobs_db` database.
 
@@ -103,3 +101,5 @@ If you want to crawl another website or another part of a website, you need to d
 the customized config should be the instance of `RunConfig` in [code/hiking/core/run_config.py](https://github.com/david-liu/hiking/blob/dev/code/hiking/core/run_config.py).
 
 For more information, please reference [code/run_configs/qiaobutang_top20.py](https://github.com/david-liu/hiking/blob/dev/code/run_configs/qiaobutang_top20.py) and [code/run_configs/shixiseng.py](https://github.com/david-liu/hiking/blob/dev/code/run_configs/shixiseng.py)
+
+When you create the `RunConfig`, you need to create a new application to run the applcation with the  `RunConfig`, For more information, please reference [code/job_app.py](https://github.com/david-liu/hiking/blob/dev/code/job_app.py).

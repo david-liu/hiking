@@ -1,4 +1,9 @@
-from hiking.core.crawler import Crawler
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+from hiking.core import Crawler
+
 import threading
 import logging
 

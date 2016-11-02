@@ -1,4 +1,5 @@
 jupyter
+furl
 selenium
 pymongo
 rainbow_logging_handler

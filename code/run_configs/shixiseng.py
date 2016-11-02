@@ -1,6 +1,10 @@
-import hiking.utils.webelement_parser_helper as parser_helper
-from hiking.core.run_config import ByKeys, FieldTypeKeys, FieldMultiplicityKeys
-from hiking.core.run_config import RunConfig
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+from hiking.utils import parser_helper, url_helper
+from hiking.core.run_config import ByKeys, FieldTypeKeys, FieldMultiplicityKeys, RunConfig
+
 
 SITE_URL = 'http://www.shixiseng.com'
 
@@ -16,10 +20,11 @@ CSS_SELECTORS = {
 def _list_detail_page_urls(browser):
     urls = []
     urls.extend(_get_hotjob_urls(browser))
-    urls.extend(_get_hotcompany_job_urls(browser))
+        #urls.extend(_get_hotcompany_job_urls(browser))
     return urls
 
 def _get_hotjob_urls(browser):
+
     elems = browser.find_elements_by_css_selector('.jib_inf_inf')
     urls = []
     for elem in elems:
@@ -81,6 +86,7 @@ def create_run_config():
         site_url=SITE_URL,
         field_selectors=CSS_SELECTORS,
         list_detail_page_urls_fn=_list_detail_page_urls,
+        block_selector='.box',
         field_element_processors={
             'updated_date' : _update_date_elelment_processor,
             'location' : _location_element_processor,

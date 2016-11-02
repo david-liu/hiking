@@ -7,7 +7,7 @@ def date_handler(obj):
     else:
         raise TypeError ("Type not serializable")
 
-class JobConsoleRepository(object):
+class ConsoleRepository(object):
 
-    def add_job(self, job):
+    def add_entity(self, job):
         print(json.dumps(job, ensure_ascii=False, default=date_handler))

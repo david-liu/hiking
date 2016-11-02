@@ -1,5 +1,6 @@
 
 class ByKeys(object):
+
     """Standard names for a selector type to locate a element.
 
     The following standard keys are defined:
@@ -19,9 +20,11 @@ class ByKeys(object):
 
     @classmethod
     def values(cls):
-        return [cls.ID, cls.NAME, cls.CSS_SELECTOR, cls.CLASS_NAME,cls.X_PATH]
+        return [cls.ID, cls.NAME, cls.CSS_SELECTOR, cls.CLASS_NAME, cls.X_PATH]
+
 
 class FieldTypeKeys(object):
+
     """Standard names for field type.
 
     The following standard keys are defined:
@@ -34,12 +37,14 @@ class FieldTypeKeys(object):
     STRING = 'string'
     INT = 'int'
     DATE = 'date'
-    
+
     @classmethod
     def values(cls):
         return [cls.STRING, cls.INT, cls.DATE]
 
+
 class FieldMultiplicityKeys(object):
+
     """Standard names for filed mutiplicatity.
 
     The following standard keys are defined:
@@ -50,21 +55,23 @@ class FieldMultiplicityKeys(object):
 
     ONE = '1'
     MANY = '*'
-    
+
     @classmethod
     def values(cls):
         return [cls.ONE, cls.MANY]
 
 
 class ElementSelector(object):
+
     """ This class define element selector in the page
 
     """
-    def __init__(self, 
-        key, 
-        by=ByKeys.CSS_SELECTOR, 
-        multi=FieldMultiplicityKeys.ONE, 
-        value_type=FieldTypeKeys.STRING):
+
+    def __init__(self,
+                 key,
+                 by=ByKeys.CSS_SELECTOR,
+                 multi=FieldMultiplicityKeys.ONE,
+                 value_type=FieldTypeKeys.STRING):
         """ 
         Constructor:
         Args:
@@ -73,7 +80,7 @@ class ElementSelector(object):
             multi: whether the field has one or muti valuse
             value_type: the type of the field value
         """
-        
+
         self.key = key
         self.by = by
         self.multi = multi
@@ -83,18 +90,20 @@ class ElementSelector(object):
 def is_allowed_enumu_value(enumu_cls, value):
     if value not in enumu_cls.values():
         print "% is not a valid value for %s"
-    return value  
+    return value
 
-        
+
 class RunConfig(object):
+
     """This class specifies the specific configurations for the job crawler."""
 
     def __init__(self,
-               site_url,
-               field_selectors,
-               list_detail_page_urls_fn,
-               field_element_processors=None):
-
+                 site_url,
+                 field_selectors,
+                 list_detail_page_urls_fn,
+                 block_selector="body",
+                 in_page_jumping_fn=None,
+                 field_element_processors=None):
         """Constructor.
 
         Args:
@@ -119,9 +128,13 @@ class RunConfig(object):
         """
 
         self.site_url = site_url
-        self.field_selectors = self._convert_to_element_selectors(field_selectors)
+        self.field_selectors = self._convert_to_element_selectors(
+            field_selectors)
         self.list_detail_page_urls_fn = list_detail_page_urls_fn
-        self.field_element_processors = {} if field_element_processors is None else field_element_processors
+        self.block_selector = block_selector
+        self.in_page_jumping_fn = in_page_jumping_fn
+        self.field_element_processors = {
+        } if field_element_processors is None else field_element_processors
 
     def _convert_to_element_selectors(self, element_selectors):
         """
@@ -131,40 +144,43 @@ class RunConfig(object):
         selectors = {}
         for field_name, value in element_selectors.items():
             if field_name in selectors.keys():
-                 raise ValueError('The paramter [%s] has been defined' % field_name)
-            
+                raise ValueError(
+                    'The paramter [%s] has been defined' % field_name)
+
             if isinstance(value, basestring):
                 selector = ElementSelector(value)
-                
+
                 selectors[field_name] = selector
             elif isinstance(value, dict):
                 by = ByKeys.CSS_SELECTOR
                 multi = FieldMultiplicityKeys.ONE
                 value_type = FieldTypeKeys.STRING
-                
+
                 if 'key' not in value:
-                    raise ValueError('The [key] is a required configration parameter')
+                    raise ValueError(
+                        'The [key] is a required configration parameter')
 
                 selector_key = value['key']
 
                 if not selector_key:
                     return None
-                
+
                 if 'by' in value and is_allowed_enumu_value(ByKeys, value['by']):
                     by = value['by']
                 if 'multi' in value and is_allowed_enumu_value(FieldMultiplicityKeys, value['multi']):
                     multi = value['multi']
                 if 'value_type' in value and is_allowed_enumu_value(FieldTypeKeys, value['value_type']):
                     value_type = value['value_type']
-                
-                selector = ElementSelector(key=selector_key, 
-                                          by=by,
-                                          multi=multi,
-                                          value_type=value_type)
-                
+
+                selector = ElementSelector(key=selector_key,
+                                           by=by,
+                                           multi=multi,
+                                           value_type=value_type)
+
                 selectors[field_name] = selector
 
             else:
-                raise ValueError('The element selector should be a string or a dictionary')
-                
-        return selectors              
+                raise ValueError(
+                    'The element selector should be a string or a dictionary')
+
+        return selectors
