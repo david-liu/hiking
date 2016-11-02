@@ -38,6 +38,8 @@ class Crawler(object):
             browser.get(url)
             urls = list_detail_page_urls_fn(browser)
 
+            print urls
+
             if len(urls) == 0:
                 logger.error("Can not find any detials urls in: %s", url)
             else:

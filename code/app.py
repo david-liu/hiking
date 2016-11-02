@@ -16,7 +16,9 @@ from run_configs.shixiseng import create_run_config as shixiseng_run_config
 
 logger = logging.getLogger(__name__)
 
-run_configs = [qiaobutang_top20_run_config, shixiseng_run_config]
+#run_configs = [qiaobutang_top20_run_config, shixiseng_run_config]
+
+run_configs = [shixiseng_run_config]
 
 def usage():
     print ("Job chrawler version: 0.0.1")
