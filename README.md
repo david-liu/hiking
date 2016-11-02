@@ -15,7 +15,7 @@ Hiking will use Firefox as the driver to crawl web pages, please make sure that 
 
 ### PhantomJS
 
-Hiking also can run without GUI (Firefox), which means it can crawling pages in headless browser mode. 
+Hiking also can run without GUI (Firefox), which means it can crawling pages in headless browser mode.
 
 In order to support this, you need to download webkit [PhantomJS](http://phantomjs.org/download.html), and extract it in your computer.
 
@@ -56,7 +56,7 @@ brew services start mongodb
 
 * Export crawling results
 ```
-mongoexport --db jobs_db --collection jobs --out jobs_160924.csv --type=csv --fields industry,company,job_name,location,deadline,url,updated_date,created_at
+mongoexport --db jobs_db --collection jobs --out jobs_161012.csv --type=csv --fields dummy,dummy,industry,company,location,deadline,dummy,dummy,dummy,job_name,url
 ```
 
 
