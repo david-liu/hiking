@@ -24,10 +24,6 @@ class EntityMongoRepository(MongoRepository):
             for primary_field in primary_fields:
                 query[primary_field] = entity[primary_field]
 
-        print(query)
-        print(self._coll.count(query))
-
-        #query = {"url" : job["url"]}
         if query is None or self._coll.count(query) == 0:
             self.insert(entity)
         else:
