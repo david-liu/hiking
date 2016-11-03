@@ -70,6 +70,7 @@ class ElementSelector(object):
     def __init__(self,
                  key,
                  by=ByKeys.CSS_SELECTOR,
+                 is_primary=False,
                  multi=FieldMultiplicityKeys.ONE,
                  value_type=FieldTypeKeys.STRING):
         """ 
@@ -77,6 +78,7 @@ class ElementSelector(object):
         Args:
             key: the selector key
             by: selector type to locate a element
+            is_primary: whether the field is primary value for data insert or update
             multi: whether the field has one or muti valuse
             value_type: the type of the field value
         """
@@ -84,6 +86,7 @@ class ElementSelector(object):
         self.key = key
         self.by = by
         self.multi = multi
+        self.is_primary=is_primary
         self.value_type = value_type
 
 
@@ -136,6 +139,16 @@ class RunConfig(object):
         self.field_element_processors = {
         } if field_element_processors is None else field_element_processors
 
+        self.primary_fields = self._get_primary_fields()
+
+    def _get_primary_fields(self):
+        primary_fields = []
+        for field_name, selector in self.field_selectors.items():
+            if selector.is_primary:
+                primary_fields.append(field_name)
+
+        return primary_fields if len(primary_fields) > 0 else None
+
     def _convert_to_element_selectors(self, element_selectors):
         """
         convert a element selectors defined in a ditionary to ElementSelector
@@ -155,6 +168,7 @@ class RunConfig(object):
                 by = ByKeys.CSS_SELECTOR
                 multi = FieldMultiplicityKeys.ONE
                 value_type = FieldTypeKeys.STRING
+                is_primary = False
 
                 if 'key' not in value:
                     raise ValueError(
@@ -172,8 +186,12 @@ class RunConfig(object):
                 if 'value_type' in value and is_allowed_enumu_value(FieldTypeKeys, value['value_type']):
                     value_type = value['value_type']
 
+                if 'is_primary' in value :
+                    is_primary = value['is_primary']
+
                 selector = ElementSelector(key=selector_key,
                                            by=by,
+                                           is_primary=is_primary,
                                            multi=multi,
                                            value_type=value_type)
 

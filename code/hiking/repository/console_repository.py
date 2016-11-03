@@ -9,5 +9,5 @@ def date_handler(obj):
 
 class ConsoleRepository(object):
 
-    def add_entity(self, job):
-        print(json.dumps(job, ensure_ascii=False, default=date_handler))
+    def add_entity(self, entity, primary_fields=[]):
+        print(json.dumps(entity, ensure_ascii=False, default=date_handler))

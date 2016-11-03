@@ -8,6 +8,11 @@ def get_element_text(web_element):
 
     return value
 
+def get_element_attribute(web_element, attribute):
+    value = web_element.get_attribute(attribute)
+
+    return value
+
 def format_to_date(date_text, src_format):
     return datetime.datetime.strptime(date_text, src_format)
 

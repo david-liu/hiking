@@ -29,13 +29,17 @@ class Crawler(object):
             block_selector=run_config.block_selector,
             in_page_jumping_fn=run_config.in_page_jumping_fn,
             field_element_processors=run_config.field_element_processors,
+            primary_fields=run_config.primary_fields,
             save_fn=save_fn)
 
 
-    def _crawling_page(self, url, list_detail_page_urls_fn, field_selectors, block_selector="body", in_page_jumping_fn=None, field_element_processors = None, save_fn=None):
+    def _crawling_page(self, url, list_detail_page_urls_fn, field_selectors, primary_fields=None, block_selector="body", in_page_jumping_fn=None, field_element_processors = None, save_fn=None):
 
         if in_page_jumping_fn is None:
             in_page_jumping_fn= lambda x: False
+
+        if primary_fields  is None:
+            primary_fields = ['url']
 
         objects = []
         try:
@@ -81,7 +85,7 @@ class Crawler(object):
                                 obj['query_key'] = key
 
                             if save_fn is not None:
-                                save_fn(obj)
+                                save_fn(obj, primary_fields)
 
                             objects.append(obj)
 

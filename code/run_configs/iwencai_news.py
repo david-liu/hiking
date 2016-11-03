@@ -11,8 +11,12 @@ SITE_URL = 'http://www.iwencai.com/'
 keywords = [u"半年报", u"定向增发", u"董事会决议", u"非公开发行", u"风险警示", u"复牌", u"股东大会", u"股权激励", u"季报", u"年报", u"首次公开发行", u"停牌", u"退市", u"异常波动", u"员工持股", u"增发", u"资产重组", u"违法", u"IPO", u"招股", u"违规", u"违纪", u"犯罪"]
 
 CSS_SELECTORS = {
-    "title" :  '.title_word',
-    "summary" : '.s_r_summ'
+    "title" :  {
+        'key' : '.title_word',
+        'is_primary' : True
+    },
+    "summary" : '.s_r_summ',
+    'detail_url' : 'table h2.s_r_title > a'
 }
 
 def _list_detail_page_urls(browser):
@@ -37,10 +41,16 @@ def in_page_jumping_fn(browser):
     else:
         return False
 
+def _datails_page_element_processor(element):
+    url = parser_helper.get_element_attribute(element, 'href')
+    return url
+
 def create_run_config():
     return RunConfig(
         site_url=SITE_URL,
         field_selectors=CSS_SELECTORS,
         list_detail_page_urls_fn=_list_detail_page_urls,
         block_selector='.s_r_box',
-        in_page_jumping_fn=in_page_jumping_fn)
+        in_page_jumping_fn=in_page_jumping_fn,
+        field_element_processors={
+            'detail_url' : _datails_page_element_processor})
