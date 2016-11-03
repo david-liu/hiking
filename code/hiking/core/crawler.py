@@ -43,7 +43,7 @@ class Crawler(object):
             if self._phantomjs_path is not None:
                 browser = webdriver.PhantomJS(self._phantomjs_path)
             else:
-                browser = webdriver.Firefox()
+                browser = webdriver.Chrome()
 
             browser.get(url)
 

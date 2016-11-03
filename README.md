@@ -9,9 +9,13 @@ Source code is made available under the [Apache 2.0 license](https://github.com/
 
 ## Installation
 
-### Firefox
+### Chrome
 
-Hiking will use Firefox as the driver to crawl web pages, please make sure that Firefox has been installed in your computer.
+Hiking will use Chrome as the driver to crawl web pages, please make sure that Firefox has been installed in your computer.
+
+```
+brew install chromedriver
+```
 
 ### PhantomJS
 

@@ -38,7 +38,6 @@ def in_page_jumping_fn(browser):
         return False
 
 def create_run_config():
-    
     return RunConfig(
         site_url=SITE_URL,
         field_selectors=CSS_SELECTORS,
