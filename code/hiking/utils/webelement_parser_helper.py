@@ -14,7 +14,13 @@ def get_element_attribute(web_element, attribute):
     return value
 
 def format_to_date(date_text, src_format):
-    return datetime.datetime.strptime(date_text, src_format)
+    date = datetime.datetime.strptime(date_text, src_format)
+
+    if src_format.find('%Y') == -1:
+        date = datetime.date(datetime.datetime.now().year, month=date.month, day=date.day)
+
+    return date
+  
 
 def format_to_date_string(date_text, src_format, dest_format='%Y-%m-%d'):
     data_time = format_to_date(date_text, src_format)

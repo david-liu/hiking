@@ -1,3 +1,6 @@
+import json
+from hiking.utils import parser_helper, url_helper
+import functools
 
 class ByKeys(object):
 
@@ -71,8 +74,11 @@ class ElementSelector(object):
                  key,
                  by=ByKeys.CSS_SELECTOR,
                  is_primary=False,
+                 attribute_name=None,
                  multi=FieldMultiplicityKeys.ONE,
-                 value_type=FieldTypeKeys.STRING):
+                 value_process_fn=None,
+                 value_type=FieldTypeKeys.STRING,
+                 value_format=None):
         """ 
         Constructor:
         Args:
@@ -88,6 +94,17 @@ class ElementSelector(object):
         self.multi = multi
         self.is_primary=is_primary
         self.value_type = value_type
+        self.attribute_name = attribute_name
+        self.value_format=value_format
+        self.value_process_fn = value_process_fn
+
+        if value_type == FieldTypeKeys.DATE and value_format is None:
+            raise ValueError('the format string should be specified for filed [%s] with data type'  % key)
+
+
+    def __str__(self):
+        return "[key='%s', by=%s, multi=%s, is_primary=%s, value_type=%s, attribute_name=%s]" % (self.key, self.by, self.multi, self.is_primary, self.value_type, self.attribute_name)
+
 
 
 def is_allowed_enumu_value(enumu_cls, value):
@@ -103,7 +120,8 @@ class RunConfig(object):
     def __init__(self,
                  site_url,
                  field_selectors,
-                 list_detail_page_urls_fn,
+                 config_id=None,
+                 list_detail_page_urls_fn=None,
                  block_selector="body",
                  in_page_jumping_fn=None,
                  field_element_processors=None):
@@ -130,16 +148,47 @@ class RunConfig(object):
             list_detail_page_urls_fn: A functon to aggregate all details page url from the site url.
         """
 
+        self.config_id = config_id
         self.site_url = site_url
         self.field_selectors = self._convert_to_element_selectors(
             field_selectors)
         self.list_detail_page_urls_fn = list_detail_page_urls_fn
         self.block_selector = block_selector
         self.in_page_jumping_fn = in_page_jumping_fn
-        self.field_element_processors = {
-        } if field_element_processors is None else field_element_processors
+
+        
+
+        self.field_element_processors = {}
+        self.field_value_processors = {}
+        for name, field_selector in self.field_selectors.items():
+
+            # the customized element processor has the higher priority
+            if field_element_processors is not None and name in field_element_processors:
+                self.field_element_processors[name] = field_element_processors[name]
+            else:
+                # if the attribute name is not None, sepcified the attribute value extractor
+                if field_selector.attribute_name is not None:
+                    field_element_processor = functools.partial(
+                        parser_helper.get_element_attribute,
+                        attribute=field_selector.attribute_name)
+                # otherwiser use the default text extactor
+                else:
+                    field_element_processor = parser_helper.get_element_text
+
+                self.field_element_processors[name] = field_element_processor
+
+            if field_selector.value_process_fn:
+                self.field_value_processors[name] = field_selector.value_process_fn
+
+
 
         self.primary_fields = self._get_primary_fields()
+
+    def __str__(self):
+        representation = "url: %s \nblock_selector: %s \nfield_selectors:" % (self.site_url, self.block_selector)
+        for key, field_selector in self.field_selectors.items():
+            representation += "\n\t%s: %s" % (key, field_selector)
+        return representation
 
     def _get_primary_fields(self):
         primary_fields = []
@@ -169,6 +218,9 @@ class RunConfig(object):
                 multi = FieldMultiplicityKeys.ONE
                 value_type = FieldTypeKeys.STRING
                 is_primary = False
+                attribute_name = None
+                value_format = None
+                value_process_fn = None
 
                 if 'key' not in value:
                     raise ValueError(
@@ -189,11 +241,23 @@ class RunConfig(object):
                 if 'is_primary' in value :
                     is_primary = value['is_primary']
 
+                if 'attribute_name' in value:
+                    attribute_name = value['attribute_name']
+
+                if 'value_format' in value:
+                    value_format = value['value_format']
+
+                if 'value_process_script' in value:
+                    value_process_fn = eval(value['value_process_script'])
+                    
                 selector = ElementSelector(key=selector_key,
                                            by=by,
                                            is_primary=is_primary,
                                            multi=multi,
-                                           value_type=value_type)
+                                           value_type=value_type,
+                                           value_process_fn=value_process_fn,
+                                           value_format=value_format,
+                                           attribute_name=attribute_name)
 
                 selectors[field_name] = selector
 

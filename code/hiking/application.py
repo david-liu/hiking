@@ -16,8 +16,10 @@ logger = logging.getLogger(__name__)
 
 
 class HikingApplication(object):
-    def __init__(self, run_configs):
+    def __init__(self, run_configs, repository=None, phantomjs_path=None):
         self._run_configs = run_configs
+        self._repository = repository
+        self._phantomjs_path = phantomjs_path
 
     def start(self):
         argv = sys.argv[1:]
@@ -29,15 +31,21 @@ class HikingApplication(object):
         logger.info("Start a Hiking application")
         
         
-        if output_chanel == 'console':
-            repo = ConsoleRepository()
-        else:
-            if db_name is None or collection_name is None:
-                print('For Mongodb output channel, you should specify the '
-                    'database name and collection name through option: -d, '
-                    'for example [-d db:collection], please try: code/app.py -h for help.\n')
-                sys.exit()
+        if self._repository is None:
+            if output_chanel == 'console':
+                repo = ConsoleRepository()
+            else:
+                if db_name is None or collection_name is None:
+                    print('For Mongodb output channel, you should specify the '
+                        'database name and collection name through option: -d, '
+                        'for example [-d db:collection], please try: code/app.py -h for help.\n')
+                    sys.exit()
 
-            repo = EntityMongoRepository(db_name=db_name, table_name=collection_name)
+                repo = EntityMongoRepository(db_name=db_name, table_name=collection_name)
+        else:
+            repo = self._repository
+
+        if self._phantomjs_path:
+            phantomjs_path = self._phantomjs_path
 
         crawling_service.start(self._run_configs, phantomjs_path, repo.add_entity)

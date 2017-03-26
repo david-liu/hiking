@@ -2,4 +2,8 @@ jupyter
 furl
 selenium
 pymongo
+pymysql
+gunicorn
+flask
+requests
 rainbow_logging_handler

@@ -9,6 +9,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+MAX_THREADS = 10
 
 def start(run_configs, phantomjs_path=None, saver=None):
     logger.info('start crawling tasks with #%s configs ', len(run_configs))
