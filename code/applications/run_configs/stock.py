@@ -24,7 +24,7 @@ def _list_detail_page_urls(browser):
     
     urls = []
     for year in [2015, 2016]:
-        for season in range(1, 4)
+        for season in range(1, 4):
             urls.append(base_url % (year, season))
 
     return urls

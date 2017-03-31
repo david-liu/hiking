@@ -45,6 +45,7 @@ class NextPageJumper(object):
                 continue
             else:
                 self._next_page_links.add(link_value)
+
                 next_link.click()
 
                 return True
@@ -61,7 +62,7 @@ class TaskConfigurationRepository(object):
                                      db=db)
 
     def get_crawling_task_config(self, crawling_task_ids):
-        sql = "SELECT t.id, t.`type`, t.`url`, t.`save_type`, t.`saved_on`, m.`crawler_channel_id`, m.block_selector, m.next_page_selector_config, m.`field_mapping` FROM crawler_task AS t, crawler_entity_mapping AS m WHERE t.entity_mapping_id = m.id AND t.id in (%s)" % ','.join(
+        sql = "SELECT t.id, t.`type`, t.`url`, t.`save_type`, t.`saved_on`, t.`logged_on`, m.`crawler_channel_id`, m.block_selector, m.next_page_selector_config, m.`field_mapping` FROM crawler_task AS t, crawler_entity_mapping AS m WHERE t.entity_mapping_id = m.id AND t.id in (%s)" % ','.join(
             crawling_task_ids)
 
         task_definitions = self.dbOperator.list_by(sql, {})
@@ -120,7 +121,8 @@ class TaskConfigurationRepository(object):
                 next_page_jump_fn = None
 
 
-
+            print(task_defintion[u'url'])   
+             
             field_mappings = run_config.RunConfig(site_url=task_defintion[u'url'],
                                                   field_selectors=field_mapping,
                                                   config_id=task_defintion[
@@ -131,7 +133,8 @@ class TaskConfigurationRepository(object):
             tasks.append(CrawlingTask(
                 task_id=task_defintion[u'id'],
                 channel_id=task_defintion[u'crawler_channel_id'],
-                reset_url=task_defintion[u'saved_on'],
+                saved_on_url=task_defintion[u'saved_on'],
+                logged_on_url=task_defintion[u'logged_on'],
                 run_config=field_mappings))
 
         return tasks

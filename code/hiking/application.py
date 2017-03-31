@@ -16,20 +16,27 @@ logger = logging.getLogger(__name__)
 
 
 class HikingApplication(object):
-    def __init__(self, run_configs, repository=None, phantomjs_path=None):
+    def __init__(self, run_configs=None, repository=None, phantomjs_path=None, run_in_command_line = True):
         self._run_configs = run_configs
         self._repository = repository
         self._phantomjs_path = phantomjs_path
+        self._run_in_command_line = run_in_command_line
+
+        if self._run_configs is None:
+            raise ValueError('No run configs to run')
 
     def start(self):
-        argv = sys.argv[1:]
 
-        output_chanel, phantomjs_path, open_debug, db_name, collection_name = command_parameters_parser.get_running_options(argv)
+        if self._run_in_command_line:
+            argv = sys.argv[1:]
+            output_chanel, phantomjs_path, open_debug, db_name, collection_name = command_parameters_parser.get_running_options(argv)
+        else:
+            open_debug = False
+            phantomjs_path = None
 
         setup_console_logging(logging.DEBUG if open_debug else logging.INFO)
 
         logger.info("Start a Hiking application")
-        
         
         if self._repository is None:
             if output_chanel == 'console':
@@ -48,4 +55,4 @@ class HikingApplication(object):
         if self._phantomjs_path:
             phantomjs_path = self._phantomjs_path
 
-        crawling_service.start(self._run_configs, phantomjs_path, repo.add_entity)
+        crawling_service.start(self._run_configs, phantomjs_path, repo.add_entity, repo.add_log)

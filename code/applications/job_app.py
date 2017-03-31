@@ -15,8 +15,6 @@ import requests
 import urllib2
 
 
-from hiking.repository import MySqlConfigRepository
-from hiking import HikingApplication
 from hiking.utils import parser_helper, url_helper
 from hiking.utils import sequence_service
 from hiking.utils import WebServiceLoader
@@ -30,6 +28,10 @@ app = Flask(__name__)
         verb="add",
         description="Start a crawling task.",
         parameters_desc={
+            'batch_id': {
+                'desc':'the id of the task',
+                'type':'String'
+            },
             'task_id': {
                 'desc':'the id of the task',
                 'type':'String'
@@ -51,14 +53,51 @@ app = Flask(__name__)
                 'type':'String'
             }
         })
-def add_crawling_task(task_id, title, url, location, publish_date):
+def add_crawling_task(batch_id, task_id, title, url, location, publish_date):
 	
   print('=======')
+  print(batch_id)
   print(task_id)
   print(title)
   print(url)
   print(location)
   print(publish_date)
+
+
+@sequence_service(
+        noun="crawling_log",
+        verb="add",
+        description="add a log.",
+        parameters_desc={
+            'batch_id': {
+                'desc':'the id of the task',
+                'type':'String'
+            },
+            'task_id': {
+                'desc':'the id of the task',
+                'type':'String'
+            },
+            'status' : {
+                'desc':'the status',
+                'type':'String'
+            },
+            'url' : {
+                'desc':'the url of the log on',
+                'type':'String'
+            },
+            'message' : {
+                'desc':'the message of the log',
+                'type':'String'
+            }
+        })
+def add_crawling_task(batch_id, task_id, status, url, message):
+  
+  print('=======')
+  print(batch_id)
+  print(task_id)
+  print(status)
+  print(url)
+  print(message)
 
 
 

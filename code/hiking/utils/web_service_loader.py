@@ -127,7 +127,11 @@ class WebServiceLoader(object):
         
             service_config = self._find_service_config(noun, verb)
 
+            if not service_config:
+                return jsonify(fail_response('there is no service registed on /api/%s/%s' % (noun, verb)))
+
             return self._invoke_service(request.args, service_config)
+            
 
 
     def _invoke_service(self, request_data, service_config):
@@ -156,6 +160,9 @@ class WebServiceLoader(object):
                 result = service_fn(**request_payload)
 
                 return jsonify(success_response(result))
+
+            # except ValueError as inst:
+            #     return jsonify(fail_response(str(inst)))
 
             except Exception as inst:
                 logger.debug("find exception during evaluate: %s", inst)
