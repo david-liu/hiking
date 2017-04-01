@@ -10,9 +10,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-batch_size = 10
-
-def start(run_configs, phantomjs_path=None, saver=None, log_saver=None):
+def start(run_configs, phantomjs_path=None, saver=None, log_saver=None, batch_size=5):
     logger.info('start crawling tasks with #%s configs ', len(run_configs))
 
     num_batches = int(len(run_configs)/batch_size) + 1

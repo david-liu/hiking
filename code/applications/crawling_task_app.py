@@ -156,7 +156,8 @@ class CrawlingTaskApplication(object):
       app = HikingApplication(run_config_fns, 
         repository=repository, 
         phantomjs_path=self.phantomjs_path, 
-        run_in_command_line=False)
+        run_in_command_line=False,
+        )
       
       t = threading.Thread(target=app.start)
       t.start()
@@ -180,7 +181,7 @@ if __name__ == "__main__":
     #phantomjs_path='/root/crawling-task/plugins/phantomjs/linux/phantomjs')
     phantomjs_path='/Users/gbsc.ibm/pyproject/hiking/plugins/phantomjs/mac/phantomjs')
 
-  application.start_crawling_task('4', task_batched=False)
+  application.start_crawling_task('1,2,3,4', task_batched=False)
 
 
 

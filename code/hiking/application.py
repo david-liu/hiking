@@ -16,11 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 class HikingApplication(object):
-    def __init__(self, run_configs=None, repository=None, phantomjs_path=None, run_in_command_line = True):
+
+    def __init__(self, run_configs=None, repository=None, phantomjs_path=None, run_in_command_line=True, batch_size=5):
         self._run_configs = run_configs
         self._repository = repository
         self._phantomjs_path = phantomjs_path
         self._run_in_command_line = run_in_command_line
+        self._batch_size = batch_size
 
         if self._run_configs is None:
             raise ValueError('No run configs to run')
@@ -29,7 +31,8 @@ class HikingApplication(object):
 
         if self._run_in_command_line:
             argv = sys.argv[1:]
-            output_chanel, phantomjs_path, open_debug, db_name, collection_name = command_parameters_parser.get_running_options(argv)
+            output_chanel, phantomjs_path, open_debug, db_name, collection_name = command_parameters_parser.get_running_options(
+                argv)
         else:
             open_debug = False
             phantomjs_path = None
@@ -37,22 +40,28 @@ class HikingApplication(object):
         setup_console_logging(logging.DEBUG if open_debug else logging.INFO)
 
         logger.info("Start a Hiking application")
-        
+
         if self._repository is None:
             if output_chanel == 'console':
                 repo = ConsoleRepository()
             else:
                 if db_name is None or collection_name is None:
                     print('For Mongodb output channel, you should specify the '
-                        'database name and collection name through option: -d, '
-                        'for example [-d db:collection], please try: code/app.py -h for help.\n')
+                          'database name and collection name through option: -d, '
+                          'for example [-d db:collection], please try: code/app.py -h for help.\n')
                     sys.exit()
 
-                repo = EntityMongoRepository(db_name=db_name, table_name=collection_name)
+                repo = EntityMongoRepository(
+                    db_name=db_name, table_name=collection_name)
         else:
             repo = self._repository
 
         if self._phantomjs_path:
             phantomjs_path = self._phantomjs_path
 
-        crawling_service.start(self._run_configs, phantomjs_path, repo.add_entity, repo.add_log)
+        crawling_service.start(
+            run_configs=self._run_configs,
+            phantomjs_path=self._phantomjs_path,
+            saver=repo.add_entity,
+            log_saver=repo.add_log,
+            batch_size=self._batch_size)

@@ -32,12 +32,13 @@ def initialize_app(cfg_file, section=None):
   user = conf.get('datasource_user')
   password = conf.get('datasource_password')
   phantomjs_path=conf.get('phantomjs_path')
-  
+
   application = CrawlingTaskApplication(host=host, 
     user=user, 
     password=password, 
     db=db,
-    phantomjs_path=phantomjs_path)
+    phantomjs_path=phantomjs_path,
+    batch_size=5)
 
   service_loader = WebServiceLoader(app)
   service_loader.register_service_method(application.start_crawling_task)
