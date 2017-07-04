@@ -38,20 +38,20 @@ class EntityRestRepostory(object):
     for task in tasks:
       run_config_id = '%s-%s' % (task.batch_id, task.task_id)
       self.task_save_config[run_config_id] = task
-  
+
 
   def add_entity(self, entity, primary_fields=[], run_config_id=None):
     if run_config_id not in self.task_save_config:
       logger.error('can not find the task with url: %s' % entity['_url'])
     else:
       task = self.task_save_config[run_config_id]
-      
+
       entity['batch_id'] = task.batch_id
       entity['task_id'] = task.task_id
       content = json.loads(json.dumps(entity, ensure_ascii=True, default=date_handler))
 
       logger.info(json.dumps(content, ensure_ascii=False, default=date_handler))
-      
+
       #response = requests.post(task.saved_on_url, json=content)
 
 
@@ -99,12 +99,12 @@ class CrawlingTaskApplication(object):
     logger.info('begin to start crawling task: [%s]' % task_ids)
 
     if not task_ids or len(task_ids) == 0:
-      raise ValueError("the task id shoud be provided.")  
+      raise ValueError("the task id shoud be provided.")
 
 
     task_ids = [id.strip() for id in task_ids.split(",")]
     task_ids_set = set(task_ids)
-    
+
     if len(task_ids) == 0:
       raise ValueError("the task id shoud be provided.")
 
@@ -124,7 +124,7 @@ class CrawlingTaskApplication(object):
             new_task_ids.append(task_id)
 
         except:
-          raise ValueError("fail to parse batch id and task id with '_'.")  
+          raise ValueError("fail to parse batch id and task id with '_'.")
       task_ids = new_task_ids
     else:
       task_ids = list(task_ids_set)
@@ -150,15 +150,15 @@ class CrawlingTaskApplication(object):
         task.run_config.config_id = '%s-%s' % (task.batch_id, task.task_id)
 
         run_config_fns.append(create_run_config_fn(task.run_config))
-      
+
       repository = EntityRestRepostory(tasks)
 
-      app = HikingApplication(run_config_fns, 
-        repository=repository, 
-        phantomjs_path=self.phantomjs_path, 
+      app = HikingApplication(run_config_fns,
+        repository=repository,
+        phantomjs_path=self.phantomjs_path,
         run_in_command_line=False,
         )
-      
+
       t = threading.Thread(target=app.start)
       t.start()
 
@@ -170,19 +170,15 @@ if __name__ == "__main__":
 # datasource_user=cfdev
 # datasource_password=cfdev
   application = CrawlingTaskApplication(
-    # host='139.196.193.120', 
-    # user='cfdev', 
-    # password='tongji2016', 
-    # db='cfdb',
-    host='localhost', 
-    user='root', 
-    password='root', 
-    db='crawling_task',
-    #phantomjs_path='/root/crawling-task/plugins/phantomjs/linux/phantomjs')
-    phantomjs_path='/Users/gbsc.ibm/pyproject/hiking/plugins/phantomjs/mac/phantomjs')
+    host='139.196.193.120',
+    user='cfdev',
+    password='tongji2016',
+    db='cfdb',
+    # host='localhost',
+    # user='root',
+    # password='root',
+    # db='crawling_task',
+    phantomjs_path='/Users/zhouy/.nvm/versions/node/v6.10.0/bin/phantomjs')
+    # phantomjs_path='/Users/gbsc.ibm/pyproject/hiking/plugins/phantomjs/mac/phantomjs')
 
-  application.start_crawling_task('1,2,3,4', task_batched=False)
-
-
-
-
+  application.start_crawling_task('1403', task_batched=False)

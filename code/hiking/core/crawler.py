@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import signal
 import os
 import sys
 import platform
@@ -53,7 +54,7 @@ class Crawler(object):
         if self._phantomjs_path is not None:
             browser = webdriver.PhantomJS(self._phantomjs_path)
 
-            #  set a fake browser size before doing browser.get(""). 
+            #  set a fake browser size before doing browser.get("").
             #  to solove the problem: Element is not currently visible and may not be manipulated
             browser.set_window_size(1124, 850)
         else:
@@ -111,7 +112,7 @@ class Crawler(object):
                                 field_selectors=field_selectors,
                                 field_element_processors=field_element_processors,
                                 field_value_processors=field_value_processors)
-                            
+
                             if isinstance(urls, dict):
                                 obj['query_key'] = key
 
@@ -127,7 +128,7 @@ class Crawler(object):
                             break
                         else:
                             time.sleep(3)
-         
+
             except Exception as inst:
                 logger.error("Find exception during Crawling page: %s", inst)
 
@@ -143,7 +144,7 @@ class Crawler(object):
 
                 log_save_fn('success', run_config_id, url, message)
 
-
+        browser.service.process.send_signal(signal.SIGTERM)
         browser.quit()
 
         logger.info("finish to crawl #%s entities" % len(objects))
@@ -180,7 +181,7 @@ class Crawler(object):
             except Exception as inst:
                 logger.error(
                     "Find exception during Crawling page: %s", field_name)
-                
+
                 raise inst
 
         return obj
@@ -211,7 +212,7 @@ class Crawler(object):
         if len(elements) == 0:
             logger.error("can not find field [%s] with [%s] selector: [%s]",
                          field_name, field_selector.key, field_selector.by)
-            
+
             raise ValueError("can not find field [%s] with [%s] selector: [%s]" %
                          (field_name, field_selector.key, field_selector.by))
 

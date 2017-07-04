@@ -2,17 +2,16 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from sets import Set
-import logging
 import json
-from hiking.utils import DBOperator
+import logging
+
 from hiking.core import run_config, CrawlingTask
+from hiking.utils import DBOperator
 
 logger = logging.getLogger(__name__)
 
 
 class NextPageJumper(object):
-
     def __init__(self, next_page_css_selector, attribute_value_key='href', excluded_values=None, included_values=None):
         if excluded_values is None:
             self._excluded_values = []
@@ -25,7 +24,7 @@ class NextPageJumper(object):
             self._included_values = included_values
 
         self._attribute_value_key = attribute_value_key
-        self._next_page_links = Set()
+        self._next_page_links = set()
         self._next_page_css_selector = next_page_css_selector
 
     def jump_to_next_page(self, browser):
@@ -54,7 +53,6 @@ class NextPageJumper(object):
 
 
 class TaskConfigurationRepository(object):
-
     def __init__(self, host='localhost', user='root', password='root', db='cfdb'):
         self.dbOperator = DBOperator(host=host,
                                      user=user,
@@ -62,8 +60,11 @@ class TaskConfigurationRepository(object):
                                      db=db)
 
     def get_crawling_task_config(self, crawling_task_ids):
-        sql = "SELECT t.id, t.`type`, t.`url`, t.`save_type`, t.`saved_on`, t.`logged_on`, m.`crawler_channel_id`, m.block_selector, m.next_page_selector_config, m.`field_mapping` FROM crawler_task AS t, crawler_entity_mapping AS m WHERE t.entity_mapping_id = m.id AND t.id in (%s)" % ','.join(
-            crawling_task_ids)
+        sql = "SELECT t.id, t.`type`, t.`url`, t.`save_type`, t.`saved_on`, t.`logged_on`, m.`crawler_channel_id`, " \
+              "m.block_selector, m.next_page_selector_config, m.`field_mapping`, m.`detail_links_selector` " \
+              "FROM crawler_task AS t, crawler_entity_mapping AS m " \
+              "WHERE t.entity_mapping_id = m.id AND t.id in (%s)" \
+              % ','.join(crawling_task_ids)
 
         task_definitions = self.dbOperator.list_by(sql, {})
 
@@ -71,11 +72,27 @@ class TaskConfigurationRepository(object):
             return None
 
         tasks = []
-        for task_defintion in task_definitions:
+        for task_definition in task_definitions:
 
-            field_mapping = json.loads(task_defintion[u'field_mapping'])
-            block_selector = task_defintion.get(u'block_selector')
-            next_page_selector_config = task_defintion.get(
+            field_mapping = json.loads(task_definition[u'field_mapping'])
+            block_selector = task_definition.get(u'block_selector')
+            detail_links_selector = task_definition[u'detail_links_selector']
+            
+
+            if detail_links_selector:
+                def list_detail_page_urls_fn(browser):
+                    elems = browser.find_elements_by_css_selector(detail_links_selector)
+
+                    urls = []
+                    for elem in elems:
+                        urls.append(elem.get_attribute("href"))
+                    
+                    return urls
+            else:
+                list_detail_page_urls_fn = None
+
+
+            next_page_selector_config = task_definition.get(
                 u'next_page_selector_config')
 
             if not block_selector:
@@ -114,27 +131,26 @@ class TaskConfigurationRepository(object):
                                                  included_values=included_values)
 
                 except Exception as e:
+                    print(e)
                     page_jumper = NextPageJumper(next_page_selector_config)
 
                 next_page_jump_fn = page_jumper.jump_to_next_page
             else:
                 next_page_jump_fn = None
 
-
-            print(task_defintion[u'url'])   
-             
-            field_mappings = run_config.RunConfig(site_url=task_defintion[u'url'],
+            field_mappings = run_config.RunConfig(site_url=task_definition[u'url'],
                                                   field_selectors=field_mapping,
-                                                  config_id=task_defintion[
+                                                  config_id=task_definition[
                                                       u'id'],
+                                                  list_detail_page_urls_fn=list_detail_page_urls_fn,
                                                   block_selector=block_selector,
                                                   in_page_jumping_fn=next_page_jump_fn)
 
             tasks.append(CrawlingTask(
-                task_id=task_defintion[u'id'],
-                channel_id=task_defintion[u'crawler_channel_id'],
-                saved_on_url=task_defintion[u'saved_on'],
-                logged_on_url=task_defintion[u'logged_on'],
+                task_id=task_definition[u'id'],
+                channel_id=task_definition[u'crawler_channel_id'],
+                saved_on_url=task_definition[u'saved_on'],
+                logged_on_url=task_definition[u'logged_on'],
                 run_config=field_mappings))
 
         return tasks
