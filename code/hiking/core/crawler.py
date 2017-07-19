@@ -69,12 +69,22 @@ class Crawler(object):
                 browser.get(url)
 
                 time.sleep(5)
-
+                urls = []
                 if list_detail_page_urls_fn is None:
                     urls = [url]
                 else:
                     urls = list_detail_page_urls_fn(browser)
 
+                    while True:
+                        has_more_in_page = in_page_jumping_fn(browser)
+                        if not has_more_in_page:
+                            break
+                        else:
+                            time.sleep(3)
+                            urls += list_detail_page_urls_fn(browser)
+
+                    urls = list(set(urls))
+                    logger.info(urls)
                     if (isinstance(urls, list) or isinstance(urls, dict)) and len(urls) == 0:
                         logger.log("Can not find any detials urls in: %s", url)
 
@@ -83,7 +93,7 @@ class Crawler(object):
                                 (len(urls), url))
                 else:
                     logger.info("find geneartor details links in: %s" % (url))
-
+                # break
                 if isinstance(urls, dict):
                     iterateItems = urls.items()
                 elif isinstance(urls, list):
@@ -94,42 +104,33 @@ class Crawler(object):
                     browser.get(url)
                     time.sleep(3)
 
-                    while True:
+                    blocks = browser.find_elements_by_css_selector(
+                        block_selector)
 
-                        blocks = browser.find_elements_by_css_selector(
-                            block_selector)
+                    if len(blocks) == 0:
+                        raise ValueError('There is not any search blocks with css selector: %s' % block_selector)
 
-                        if len(blocks) == 0:
-                            raise ValueError('There is not any search blocks with css selector: %s' % block_selector)
+                    logger.debug("find #%s blocks areas in [%s] with css selector [%s]" % (
+                        len(blocks), url, block_selector))
 
-                        logger.debug("find #%s blocks areas in [%s] with css selector [%s]" % (
-                            len(blocks), url, block_selector))
+                    for block in blocks:
+                        obj = self.__parse_block_detail_page(
+                            root_element=block,
+                            url=browser.current_url,
+                            field_selectors=field_selectors,
+                            field_element_processors=field_element_processors,
+                            field_value_processors=field_value_processors)
 
-                        for block in blocks:
-                            obj = self.__parse_block_detail_page(
-                                root_element=block,
-                                url=browser.current_url,
-                                field_selectors=field_selectors,
-                                field_element_processors=field_element_processors,
-                                field_value_processors=field_value_processors)
+                        if isinstance(urls, dict):
+                            obj['query_key'] = key
 
-                            if isinstance(urls, dict):
-                                obj['query_key'] = key
+                        if save_fn is not None:
+                            save_fn(
+                                obj, primary_fields, run_config_id=run_config_id)
 
-                            if save_fn is not None:
-                                save_fn(
-                                    obj, primary_fields, run_config_id=run_config_id)
-
-                            objects.append(obj)
-
-                        has_more_in_page = in_page_jumping_fn(browser)
-
-                        if not has_more_in_page:
-                            break
-                        else:
-                            time.sleep(3)
-
+                        objects.append(obj)
             except Exception as inst:
+                logger.error(url)
                 logger.error("Find exception during Crawling page: %s", inst)
 
                 if log_save_fn:
@@ -138,6 +139,7 @@ class Crawler(object):
                 has_error = True
             finally:
                 pass
+
 
             if log_save_fn and not has_error:
                 message = 'Crawled #%s entities.' % len(objects)
@@ -212,9 +214,10 @@ class Crawler(object):
         if len(elements) == 0:
             logger.error("can not find field [%s] with [%s] selector: [%s]",
                          field_name, field_selector.key, field_selector.by)
-
-            raise ValueError("can not find field [%s] with [%s] selector: [%s]" %
-                         (field_name, field_selector.key, field_selector.by))
+            #
+            # raise ValueError("can not find field [%s] with [%s] selector: [%s]" %
+            #              (field_name, field_selector.key, field_selector.by))
+            return ''
 
         elif field_selector.multi == FieldMultiplicityKeys.ONE:
             value = element_text_processor(elements[0])
