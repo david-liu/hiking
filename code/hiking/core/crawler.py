@@ -84,7 +84,7 @@ class Crawler(object):
                             urls += list_detail_page_urls_fn(browser)
 
                     urls = list(set(urls))
-                    logger.info(urls)
+                    # logger.info(urls)
                     if (isinstance(urls, list) or isinstance(urls, dict)) and len(urls) == 0:
                         logger.log("Can not find any detials urls in: %s", url)
 

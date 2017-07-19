@@ -52,7 +52,7 @@ class EntityRestRepostory(object):
 
       logger.info(json.dumps(content, ensure_ascii=False, default=date_handler))
 
-      #response = requests.post(task.saved_on_url, json=content)
+      response = requests.post(task.saved_on_url, json=content)
 
 
 
@@ -73,7 +73,7 @@ class EntityRestRepostory(object):
 
       logger.info(json.dumps(log, ensure_ascii=False, default=date_handler))
 
-      #response = requests.post(task.logged_on_url, json=log)
+      response = requests.post(task.logged_on_url, json=log)
 
 class CrawlingTaskApplication(object):
 
@@ -170,7 +170,7 @@ if __name__ == "__main__":
 # datasource_user=cfdev
 # datasource_password=cfdev
   application = CrawlingTaskApplication(
-    host='139.196.193.120',
+    host='127.0.0.1',
     user='cfdev',
     password='tongji2016',
     db='cfdb',
@@ -181,4 +181,6 @@ if __name__ == "__main__":
     phantomjs_path='/Users/zhouy/.nvm/versions/node/v6.10.0/bin/phantomjs')
     # phantomjs_path='/Users/gbsc.ibm/pyproject/hiking/plugins/phantomjs/mac/phantomjs')
 
-  application.start_crawling_task('1403', task_batched=False)
+  application.start_crawling_task('1418,1318,5303,5304,5305,5306,5307,5308,5309,5310', task_batched=False)
+  # ,5303,5304,5305,5306,5307,5308,5309,5310
+  # 1418,1318,5303,5304,5305,5306,5307,5308,5309,5310

@@ -2,19 +2,19 @@
 
 case "$1" in 
 start)
-   gunicorn -c /root/crawling-task/gunicorn_wsgi.conf crawling_task_wsgi:app
+   gunicorn -c /Users/zhouy/CareerFrog/hiking/code/applications/gunicorn_wsgi.conf crawling_task_wsgi:app
    ;;
 stop)
-   kill `cat /var/run/gunicorn/crawler_app.pid`
-   rm /var/run/gunicorn/crawler_app.pid
+   kill `cat /Users/zhouy/CareerFrog/hiking/code/applications/run/gunicorn/crawler_app.pid`
+   rm /Users/zhouy/CareerFrog/hiking/code/applications/run/gunicorn/crawler_app.pid
    ;;
 restart)
    $0 stop
    $0 start
    ;;
 status)
-   if [ -e /var/run/gunicorn/crawler_app.pid ]; then
-      echo crawler_app is running, pid=`cat /var/run/gunicorn/crawler_app.pid`
+   if [ -e /Users/zhouy/CareerFrog/hiking/code/applications/run/gunicorn/crawler_app.pid ]; then
+      echo crawler_app is running, pid=`cat /Users/zhouy/CareerFrog/hiking/code/applications/run/gunicorn/crawler_app.pid`
    else
       echo crawler_app is NOT running
       exit 1

@@ -77,7 +77,7 @@ class TaskConfigurationRepository(object):
             field_mapping = json.loads(task_definition[u'field_mapping'])
             block_selector = task_definition.get(u'block_selector')
             detail_links_selector = task_definition[u'detail_links_selector']
-            
+
 
             if detail_links_selector:
                 def list_detail_page_urls_fn(browser):
@@ -86,7 +86,7 @@ class TaskConfigurationRepository(object):
                     urls = []
                     for elem in elems:
                         urls.append(elem.get_attribute("href"))
-                    
+
                     return urls
             else:
                 list_detail_page_urls_fn = None
@@ -137,7 +137,6 @@ class TaskConfigurationRepository(object):
                 next_page_jump_fn = page_jumper.jump_to_next_page
             else:
                 next_page_jump_fn = None
-
             field_mappings = run_config.RunConfig(site_url=task_definition[u'url'],
                                                   field_selectors=field_mapping,
                                                   config_id=task_definition[

@@ -33,16 +33,28 @@ def initialize_app(cfg_file, section=None):
   password = conf.get('datasource_password')
   phantomjs_path=conf.get('phantomjs_path')
 
-  application = CrawlingTaskApplication(host=host, 
-    user=user, 
-    password=password, 
-    db=db,
-    phantomjs_path=phantomjs_path,
-    batch_size=5)
 
+  try:
+      application = CrawlingTaskApplication(host=host,
+        user=user,
+        password=password,
+        db=db,
+        phantomjs_path=phantomjs_path)
+  except Exception as e:
+      logger.error(e)
+
+  # application = CrawlingTaskApplication(host=host,
+  #   user=user,
+  #   password=password,
+  #   db=db,
+  #   phantomjs_path=phantomjs_path,
+  #   batch_size=10)
+
+
+  logger.info(application)
   service_loader = WebServiceLoader(app)
   service_loader.register_service_method(application.start_crawling_task)
-  
+
   return service_loader
 
 
@@ -50,9 +62,5 @@ def initialize_app(cfg_file, section=None):
 if __name__ == "__main__":
 
   service_loader = initialize_app(helper.convert_to_abspath(__file__, 'APP.INI'), 'crawling_task')
-  
+
   service_loader.start()
-
-
-
-
